@@ -1,7 +1,15 @@
-# AoC2020
-My Advent of Code 2020 solutions
+# Advent of Code
+My [Advent of Code](https://adventofcode.com/) solutions
 
-## Highlights
+Starting a new year? Create all the directories for each day with `mkdir day{01..25}`.
+
+## 2021
+### Highlights
+
+## Comments
+
+## 2020
+### Highlights
 ![A hexagonal cellular automata](/day24/tiles_anim.gif "A hexagonal cellular automata")
 ![Sea Monster Map](/day20/seamonsters.png "Sea Monster map")
 
