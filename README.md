@@ -6,14 +6,22 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 ## 2021
 ### Highlights
 
-## Comments
+### Comments
+
+### Tags
+I note some consepts that are required to solve the chalenges for each day.
+If I need to reapply I can find code bits.
+
+Day 1: diff, lag, filter
+Day 2: path\_finding
+Day 3: recursion, matrices
 
 ## 2020
 ### Highlights
 ![A hexagonal cellular automata](2020/day24/tiles_anim.gif "A hexagonal cellular automata")
 ![Sea Monster Map](2020/day20/seamonsters.png "Sea Monster map")
 
-## Comments
+### Comments
 They're not all necessarily efficient solutions.
 
 The trickiest days/problems for me were based on efficiency problems. While I could solve the test sets, the problem set took too long to run:
