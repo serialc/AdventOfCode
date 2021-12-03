@@ -12,9 +12,11 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 I note some consepts that are required to solve the chalenges for each day.
 If I need to reapply I can find code bits.
 
-Day 1: diff, lag, filter
-Day 2: path\_finding
-Day 3: recursion, matrices
+Day:
+
+1. diff, lag, filter
+2. path\_finding
+3. recursion, matrices
 
 ## 2020
 ### Highlights
