@@ -15,8 +15,9 @@ If I need to reapply I can find code bits.
 Day:
 
 1. diff, lag, filter
-2. path\_finding
+2. path finding
 3. recursion, matrices
+4. classes, matrices
 
 ## 2020
 ### Highlights
