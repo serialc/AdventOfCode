@@ -5,7 +5,7 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 
 ## 2021
 ### Highlights
-![Good luck crossing the seafloor](2021/day05/seafloor.png "Good luck crossing the vents on the seafloor")
+<img src="2021/day05/seafloor.png" width="25%" height="25%" title="Good luck crossing the vents on the seafloor">
 
 ### Comments
 
