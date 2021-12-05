@@ -5,8 +5,11 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 
 ## 2021
 ### Highlights
+![Good luck crossing the seafloor](2021/day05/seafloor.png "Good luck crossing the vents on the seafloor")
 
 ### Comments
+
+* Day 05: There must be an easier way to determine coordinates between two diagonal points.
 
 ### Tags
 I note some consepts that are required to solve the chalenges for each day.
@@ -18,6 +21,7 @@ Day:
 2. path finding
 3. recursion, matrices
 4. classes, matrices
+5. mapping, matrices
 
 ## 2020
 ### Highlights
