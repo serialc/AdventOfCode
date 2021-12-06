@@ -12,12 +12,12 @@ with open('input', 'r') as fh:
         vcoords.append([x1,y1,x2,y2])
 
 vc = np.array(vcoords, dtype=int)
+# these are indices values, need to inc by one
 xmax = np.max(np.max(vc[:,[0,2]], 0)) + 1
 ymax = np.max(np.max(vc[:,[1,3]], 0)) + 1
 
 # create empty seafloor of correct size
-esf = np.zeros(xmax*ymax, dtype=int).reshape([xmax,ymax])
-#print(sf)
+esf = np.zeros(xmax*ymax, dtype=int).reshape([xmax, ymax])
 
 #### Part 1 ####
 def mapSeafloor(sf, mode='diag'):

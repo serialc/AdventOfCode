@@ -10,6 +10,7 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 ### Comments
 
 * Day 05: There must be an easier way to determine coordinates between two diagonal points.
+* Day 06: First part is programmed simply conceptually but is inefficient - particular given that it's modeling exponential growth. Need to consider computational efficiency from the start next time.
 
 ### Tags
 I note some consepts that are required to solve the chalenges for each day.
@@ -22,6 +23,7 @@ Day:
 3. recursion, matrices
 4. classes, matrices
 5. mapping, matrices
+6. efficiency
 
 ## 2020
 ### Highlights
