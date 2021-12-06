@@ -337,16 +337,23 @@ for mirror in range(2):
 
 from PIL import Image
 mapdim = len(tiles['img']['map'])
-im = Image.new('RGB', (mapdim, mapdim))
+im = Image.new('RGB', (mapdim*2, mapdim*2))
 pixellist = []
+col_froth = (0,150,200)
+col_water = (0,105,148)
+col_monster = (255,100,100)
 for row in tiles['img']['map']:
-    for c in row:
-        if c == '.':
-            pixellist.append((0,105,148))
-        if c == '#':
-            pixellist.append((184,231,255))
-        if c == 'O':
-            pixellist.append((184,53,45))
+    # double pixel height
+    for j in range(2):
+        for c in row:
+            # double pixel length
+            for i in range(2):
+                if c == '.':
+                    pixellist.append(col_water)
+                if c == '#':
+                    pixellist.append(col_froth)
+                if c == 'O':
+                    pixellist.append(col_monster)
 im.putdata(pixellist)
 im.save('seamonsters.png')
 
