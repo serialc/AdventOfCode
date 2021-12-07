@@ -11,6 +11,7 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 
 * Day 05: There must be an easier way to determine coordinates between two diagonal points.
 * Day 06: First part is programmed simply conceptually but is inefficient - particular given that it's modeling exponential growth. Need to consider computational efficiency from the start next time.
+* Day 07: Need to consider the statistical properties of distributions and what's being asked rather than reimplement existing operations (i.e., mean and median).
 
 ### Tags
 I note some consepts that are required to solve the chalenges for each day.
@@ -24,6 +25,7 @@ Day:
 4. classes, matrices
 5. mapping, matrices
 6. efficiency
+7. statistics
 
 ## 2020
 ### Highlights
