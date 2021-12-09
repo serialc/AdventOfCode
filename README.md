@@ -6,6 +6,7 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 ## 2021
 ### Highlights
 <img src="2021/day05/seafloor.png" width="25%" height="25%" title="Good luck crossing the vents on the seafloor">
+![Ridges and vents on the seafloor](2021/day08/ridges_seafloor.png "Ridges and vents on the seafloor")
 
 ### Comments
 
@@ -13,6 +14,7 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 * Day 06: First part is programmed simply conceptually but is inefficient - particular given that it's modeling exponential growth. Need to consider computational efficiency from the start next time.
 * Day 07: Need to consider the statistical properties of distributions and what's being asked rather than reimplement existing operations (i.e., mean and median).
 * Day 08: What a beast. A bloated beast of nested loops trying to create the logic equivalent of solving a sodoku.
+* Day 09: Over-engineered.
 
 ### Tags
 I note some consepts that are required to solve the chalenges for each day.
@@ -28,6 +30,7 @@ Day:
 6. efficiency
 7. statistics
 8. logic, sodoku-solving-like, classes
+9. cellular automata, matrices
 
 ## 2020
 ### Highlights
