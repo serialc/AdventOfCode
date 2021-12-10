@@ -32,6 +32,7 @@ Day:
 7. statistics
 8. logic, sodoku-solving-like, classes
 9. cellular automata, matrices
+10. stack
 
 ## 2020
 ### Highlights
