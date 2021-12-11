@@ -7,6 +7,8 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 ### Highlights
 <img src="2021/day05/seafloor.png" width="25%" height="25%" title="Good luck crossing the vents on the seafloor">
 
+![Dumbo octopuses flashing](2021/day11/octopus.gif "Dumbo octopuses flashing")
+
 ![Ridges and vents on the seafloor](2021/day09/ridges_seafloor.png "Ridges and vents on the seafloor")
 
 ### Comments
@@ -33,6 +35,7 @@ Day:
 8. logic, sodoku-solving-like, classes
 9. cellular automata, matrices
 10. stack
+11. cellular automata, matrices
 
 ## 2020
 ### Highlights
