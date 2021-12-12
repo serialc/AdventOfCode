@@ -18,10 +18,10 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 * Day 07: Need to consider the statistical properties of distributions and what's being asked rather than reimplement existing operations (i.e., mean and median).
 * Day 08: What a beast. A bloated beast of nested loops trying to create the logic equivalent of solving a sodoku.
 * Day 09: Over-engineered.
+* Day 12: Bind bending at first - recursion usually is.
 
 ### Tags
-I note some consepts that are required to solve the chalenges for each day.
-If I need to reapply I can find code bits.
+Concepts used or required to solve the challenges:
 
 Day:
 
@@ -36,6 +36,7 @@ Day:
 9. cellular automata, matrices
 10. stack
 11. cellular automata, matrices
+12. recursion
 
 ## 2020
 ### Highlights
