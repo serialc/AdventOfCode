@@ -11,6 +11,16 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 
 ![Ridges and vents on the seafloor](2021/day09/ridges_seafloor.png "Ridges and vents on the seafloor")
 
+Matrix folding of transparent sheet to produce the following:
+```
+.##....##..##..#..#.###...##..###..###..
+#..#....#.#..#.#.#..#..#.#..#.#..#.#..#.
+#.......#.#....##...###..#..#.#..#.###..
+#.......#.#....#.#..#..#.####.###..#..#.
+#..#.#..#.#..#.#.#..#..#.#..#.#....#..#.
+.##...##...##..#..#.###..#..#.#....###..
+```
+
 ### Comments
 
 * Day 05: There must be an easier way to determine coordinates between two diagonal points.
@@ -19,6 +29,7 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 * Day 08: What a beast. A bloated beast of nested loops trying to create the logic equivalent of solving a sodoku.
 * Day 09: Over-engineered.
 * Day 12: Bind bending at first - recursion usually is.
+* Day 13: Bug in input I believe - asymmetric fold.
 
 ### Tags
 Concepts used or required to solve the challenges:
@@ -37,6 +48,7 @@ Day:
 10. stack
 11. cellular automata, matrices
 12. recursion
+13. matrices, folding
 
 ## 2020
 ### Highlights
