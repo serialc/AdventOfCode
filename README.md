@@ -30,6 +30,12 @@ Matrix folding of transparent sheet to produce the following:
 * Day 09: Over-engineered.
 * Day 12: Bind bending at first - recursion usually is.
 * Day 13: Bug in input I believe - asymmetric fold.
+* Day 14: Required alternative thinking, flipping the task backwards. Building a dict of all possibilities back up. Then selecting the appropriate items. Also, I need to be more careful when using lists as they pass by reference and not value.
+
+#### Tricky problems
+
+* Day 08: A grind, but not as hard as Day 14. 
+* Day 14: Need to carefully work the problem out from the reverse direction.
 
 ### Tags
 Concepts used or required to solve the challenges:
@@ -49,6 +55,7 @@ Day:
 11. cellular automata, matrices
 12. recursion
 13. matrices, folding
+14. optimization, efficiency
 
 ## 2020
 ### Highlights
