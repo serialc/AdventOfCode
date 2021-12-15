@@ -5,6 +5,9 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 
 ## 2021
 ### Highlights
+![Path through low-ceiling cave](2021/day15/cave_risk_test_input.png "Path through low-ceiling cave")
+![Path through low-ceiling cave](2021/day15/cave_risk_input.png "Path through low-ceiling cave")
+
 <img src="2021/day05/seafloor.png" width="25%" height="25%" title="Good luck crossing the vents on the seafloor">
 
 ![Dumbo octopuses flashing](2021/day11/octopus.gif "Dumbo octopuses flashing")
@@ -56,6 +59,7 @@ Day:
 12. recursion
 13. matrices, folding
 14. optimization, efficiency
+15. mapping, matrices, routing efficiency
 
 ## 2020
 ### Highlights
