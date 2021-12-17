@@ -119,34 +119,65 @@ def matPrint(mat):
 
 margin = 3
 yshift = abs(ymin)
-tpad = xmax
+tpad = xmax * 1
 xdim = xmax + margin
 ydim = tpad + yshift + margin
 print("tpad", tpad,"yshift",yshift)
 
 water = np.zeros([ydim, xdim], dtype=int)
 
-
 for wp, coords in working_paths.items():
+    #print(wp, coords)
     for i in range(len(coords) - 1):
         [ix,iy] = coords[i]
         [nx,ny] = coords[i+1]
 
-        for x in range(ix,nx+1):
-            # calculate multiple y values for this x_i to x_i+1 segment pixel
-            if y >= ymin and y < tpad:
-                water[tpad - ydim - y,x] += 1
+        #print("coords", ix,iy, "to", nx,ny)
 
-matPrint(water)
+        xdiff = ix - nx
+        ydiff = iy - ny
+
+        if xdiff == 0 and ydiff == 0:
+            continue
+
+        # horizontal or vertical
+        if ix == nx:
+            slope = 999
+        else:
+            slope = ydiff/xdiff
+
+        #print("slope", slope)
+        # if slope > 1, then iterate through y range
+        if slope > 1 or slope < -1:
+            delta = 1
+            if ydiff > 0:
+                delta = -1
+
+            #print("More vertical")
+            for y in range(iy, ny, delta):
+                x = int((y - iy)/(ny - iy)*(nx - ix) + ix)
+                if y >= ymin and y < tpad:
+                    water[tpad - ydim - y,x] += 1
+        if slope <= 1:
+            #print("More horizontal")
+            for x in range(ix, nx):
+                y = int((x - ix)/(nx - ix)*(ny - iy) + iy)
+                if y >= ymin and y < tpad:
+                    water[tpad - ydim - y,x] += 1
+
+#matPrint(water)
 
 # make graphic
 print("Generating image")
 from PIL import Image
+import math
 
-magnification = 4
+magnification = 3
 h,w = water.shape
 im = Image.new('RGB', (w*magnification, h*magnification))
 pixellist = []
+
+maxv = math.log(np.max(water))
 
 for y in range(h):
     for m in range(magnification):
@@ -155,7 +186,8 @@ for y in range(h):
                 if water[y,x] == 0:
                     pixellist.append((0,0,128))
                 else:
-                    pixellist.append((128,0,0))
+                    val = math.log(water[y,x])/maxv
+                    pixellist.append((int(128*val) + 127, int(val), int(val)))
 im.putdata(pixellist)
 im.save('probe_paths.png')
 
