@@ -5,6 +5,9 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 
 ## 2021
 ### Highlights
+![Path through low-ceiling cave](2021/day15/cave_risk_test_input.png "Path through low-ceiling cave")
+![Path through low-ceiling cave](2021/day15/cave_risk_input.png "Path through low-ceiling cave")
+
 <img src="2021/day05/seafloor.png" width="25%" height="25%" title="Good luck crossing the vents on the seafloor">
 
 ![Dumbo octopuses flashing](2021/day11/octopus.gif "Dumbo octopuses flashing")
@@ -31,11 +34,13 @@ Matrix folding of transparent sheet to produce the following:
 * Day 12: Bind bending at first - recursion usually is.
 * Day 13: Bug in input I believe - asymmetric fold.
 * Day 14: Required alternative thinking, flipping the task backwards. Building a dict of all possibilities back up. Then selecting the appropriate items. Also, I need to be more careful when using lists as they pass by reference and not value.
+* Day 16: Quite a nice recursive calculator. Too much reading to figure out the requirements.
 
 #### Tricky problems
 
 * Day 08: A grind, but not as hard as Day 14. 
 * Day 14: Need to carefully work the problem out from the reverse direction.
+* Day 15: Careful, your path doesn't go only down and right.
 
 ### Tags
 Concepts used or required to solve the challenges:
@@ -56,6 +61,8 @@ Day:
 12. recursion
 13. matrices, folding
 14. optimization, efficiency
+15. mapping, matrices, routing efficiency
+16. RTFM, recursion
 
 ## 2020
 ### Highlights
