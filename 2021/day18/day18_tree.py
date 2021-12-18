@@ -221,11 +221,11 @@ with open(input_file, 'r', encoding='utf-8-sig') as fh:
         #line = "[[6,[5,[4,[3,2]]]],1]"
         #line = "[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]"
 
-        print("Next nested input line", line)
 
         node = Node()
         node.fromString(line)
-        print("Built line into node", node.getStr())
+        #print("Next nested input line", line)
+        #print("Built line into node", node.getStr())
 
         # merge node to previous node tree = [tree, node]
         if last_node is None:
