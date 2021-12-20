@@ -44,6 +44,7 @@ Matrix folding of transparent sheet to produce the following:
 * Day 08: A grind, but not as hard as Day 14. 
 * Day 14: Need to carefully work the problem out from the reverse direction.
 * Day 15: Careful, your path doesn't go only down and right.
+* Day 18: Tried to use recursion. That failed. Restarted but with a tree. Better but painful.
 
 ### Tags
 Concepts used or required to solve the challenges:
@@ -67,6 +68,9 @@ Day:
 15. mapping, matrices, routing efficiency
 16. RTFM, recursion
 17. geometry, trajectory
+18. tree, classes
+19. 3D rotation, matrices
+20. matrices, filter, binary, cellular automata
 
 ## 2020
 ### Highlights
