@@ -2,7 +2,7 @@ import numpy as np
 import math
 
 input_file = 'test_input'
-#input_file = 'input'
+input_file = 'input'
 
 # scanners can detect beacons within 1000 units (x,y,z)
 # scanners don't detect other scanners
@@ -38,7 +38,7 @@ class Scanner:
         self.calcBeaconDistancesApart()
 
         # used for rolling to change coordinates directions
-        self.rollDim = 0
+        self.rollDim = 1
 
     def __str__(self):
         print("Scanner number", self.sn)
@@ -53,33 +53,12 @@ class Scanner:
         # uses the 'correct' coordinates system now
         self.ucs = True
 
-    def getTopRightBeaconFromList(self, blist):
-        # get 'highest' beacon (max-y)
-        maxy = None
-        maxycount = 1
-        maxyid = None
-        maxy_xyz = None
-
-        for bid, xyz in self.beacons.items():
-            if bid in blist:
-                if maxy is None or xyz[1] >= maxy:
-                    if xyz[1] == maxy:
-                        # problematic
-                        maxycount += 1
-                    else:
-                        maxy = xyz[1]
-                        maxyid = bid
-                        maxy_xyz = xyz
-                        maxycount = 1
-
-        if maxycount > 1:
-            exit("Unexpected")
-
-        return [bid, maxy_xyz.copy()]
+    def getBeaconCoords(self, bid):
+        return np.array(self.beacons[bid], dtype=int)
 
     def shiftAllBeaconLocationsToUCS(self):
         # use the already set self.location for the shift to UCS
-        print("Sensor location is", self.location)
+        print("Sensor", self.sn, "UCS location is", self.location)
         for bid, xyz in self.beacons.items():
             self.beacons[bid] = np.array(xyz) + self.location
             #print(self.beacons[bid])
@@ -97,7 +76,7 @@ class Scanner:
                     bid2delete.append(bid)
 
         for bid in bid2delete:
-            print("Deleted bid", bid)
+            #print("Deleted bid", bid)
             del self.beacons[bid]
         for sbid in bid2add:
             self.beacons[sbid] = source_sensor.beacons[sbid]
@@ -142,44 +121,43 @@ class Scanner:
 
     def rollAxes(self):
 
-        # change coordinates of beacons
-        exit("ROTATION DOESN'T COVER ALL POSITIONS!")
+        self.rollDim += 1
 
-        print("Roll dimension", self.rollDim)
+        # change coordinates of beacons
+        #print("Roll dimension", self.rollDim)
+
+        #print("Rotate clockwise (on Y-axis)")
+        for bid, xyz in self.beacons.items():
+            # 3D transform
+            self.beacons[bid] = [xyz[2], xyz[1], -1*xyz[0]]
 
         # ! There are 24 possibilities - 4 rotations for each 'heading'
         # Alternate rolls to test all 6 possibilities
         if self.rollDim % 8 == 0:
-            print("Roll forwards (on X-axis)")
+            #print("Roll forwards (on X-axis)")
             # Roll on X-axis forward
             for bid, xyz in self.beacons.items():
                 # 3D transform
                 self.beacons[bid] = [xyz[0], xyz[2], -1*xyz[1]]
-            self.rollDim += 1
             return
 
         if self.rollDim % 4 == 0:
-            print("Roll right (on Z-axis)")
+            #print("Roll right (on Z-axis)")
             # Roll on Z-axis right
             for bid, xyz in self.beacons.items():
                 # 3D transform
                 self.beacons[bid] = [-1*xyz[1], xyz[0], xyz[2]]
-            self.rollDim += 1
             return
-
-        print("Rotate clockwise (on Y-axis)")
-        for bid, xyz in self.beacons.items():
-            # 3D transform
-            self.beacons[bid] = [xyz[2], xyz[1], -1*xyz[0]]
-        self.rollDim += 1
 
     def findDistMatches(self, s2):
 
-        print("\nLooking for beacons matches between", self.sn, s2.sn)
+        print("\nLooking for beacon matches between Sensor numbers", self.sn, s2.sn)
 
         # ignore diagonal and below
         bdm  = self.beacon_distance_matrix
         bdm2 =   s2.beacon_distance_matrix
+        #print(bdm)
+        #print(bdm2)
 
         s1h, s1w = bdm.shape
         s2h, s2w = bdm2.shape
@@ -201,49 +179,99 @@ class Scanner:
         bmi = np.array(beacon_matches_ids)
 
         if len(bmi) == 0:
-            print("There are no matches between sensors", self.sn, "and", s2.sn)
+            #print("There are no matches between sensors", self.sn, "and", s2.sn)
             return
+
+        # it should actually be fairly easy to match the sensors ids using
+        # bmi
+        #print("bmi\n",bmi)
+
+        bm1v, bm1f = np.unique(bmi[:,:2], return_counts=True)
+        #print(bm1v,"\n",bm1f)
+        match_dict = {}
+        for i in range(len(bm1v)):
+            m1 = bm1v[i]
+
+            # ignore infrequent matches
+            if bm1f[i] < 11:
+                return
+
+            # get the s2 beacon ids that match 11+ times with m1
+            bm2set = bmi[(bmi[:,0:2] == m1).any(axis=1), 2:]
+            bm2v, bm2f = np.unique(bm2set, return_counts=True)
+            #print(bm2v, "\n", bm2f)
+            for j in range(len(bm2v)):
+                if bm2f[j] >= 11:
+                    match_dict[m1] = bm2v[j]
+
+        if len(match_dict) == 0:
+            #print("There are no matches between sensors", self.sn, "and", s2.sn)
+            return
+
 
         # get the unique row/col ids of the beacons that appear in both scanner ranges
         # These are relative beacon ids - based on matrix col/row
         # translate to actual beacon ids
-        s1bm = self.getBeaconIdsFromIndex(np.unique(bmi[:,0:2]))
-        s2bm = s2.getBeaconIdsFromIndex(np.unique(bmi[:,2:4]))
+        s1bm = self.getBeaconIdsFromIndex(list(match_dict.keys()))
+        s2bm = s2.getBeaconIdsFromIndex(list(match_dict.values()))
 
-        print("There are", len(s1bm), "matches between sensors", self.sn, "and", s2.sn)
         if len(s1bm) < 12:
             print("Not enough for a good fix, moving on")
             return
 
-        print("S1 beacons:", s1bm)
-        gxd, gyd, gzd = self.getXYZDistributions(s1bm)
-        print("Good distributions","\n", gxd, "\n", gyd,"\n", gzd)
+        print("Found 12 common beacons.")
+        print("Sensor", self.sn, "location is", self.location)
+        print("Sensor", s2.sn, "location is", s2.location)
 
-        print("S2 beacons:", s2bm)
+        #print(s1bm)
+        #print(s2bm)
+
+        #print("\nSensor", self.sn, "beacons:", s1bm, len(s1bm))
+        gxd, gyd, gzd = self.getXYZDistributions(s1bm)
+        #print("Good distributions","\n", gxd, "\n", gyd,"\n", gzd)
+
+        #print("\nSensor", s2.sn, "beacons:", s2bm, len(s2bm))
         axd, ayd, azd = s2.getXYZDistributions(s2bm)
-        print("Alternate distributions","\n", axd,"\n", ayd,"\n", azd)
+        #print("Alternate distributions","\n", axd,"\n", ayd,"\n", azd)
 
         rot_count = 0
-        while not all(gxd == axd) or not all(gyd == ayd) or not all(gzd == azd):
+        while (len(gxd) != len(axd) or len(gyd) != len(ayd) or len(gzd) != len(azd) or
+                not all(gxd == axd) or not all(gyd == ayd) or not all(gzd == azd)):
             s2.rollAxes()
             axd, ayd, azd = s2.getXYZDistributions(s2bm)
-            print("Alternate distributions","\n", axd,"\n", ayd,"\n", azd)
+            #print("Alternate distributions","\n", axd,"\n", ayd,"\n", azd)
             rot_count += 1
             if rot_count > 23:
                 exit("BAD ROTATION")
 
-        # match_beacon_coords - mbc
-        mbc1 = self.getTopRightBeaconFromList(s1bm)
-        mbc2 = s2.getTopRightBeaconFromList(s2bm)
+        # get coords of matching beacons (first in list)
+        mbc1 = self.getBeaconCoords(s1bm[0])
+        mbc2 = s2.getBeaconCoords(s2bm[0])
+
+        #print("Selected beacon locations to determine offset")
+        #print(mbc1)
+        #print(mbc2)
+
         # then get the diff and reset s2 coordinate system
-        print(mbc1)
-        print(mbc2)
+        # NOTE that mbc1 uses UCS, from origin [0,0,0]
+        # not coordinates relative to sensor self
+        mbcdiff = mbc1 - mbc2
+
+        print("Sensor", self.sn, "location is", self.location)
+        print("Sensor", s2.sn, "location is", s2.location)
+        print("SETTING LOCATION OF", s2.sn, "RELATIVE TO", self.sn, "offset by", mbcdiff)
 
         # the difference between MBC1 and MBC2 is the shift of the sensors!
-        s2.location = np.array(mbc1[1]) - np.array(mbc2[1])
+        # But as S1 (MBC1) is always in UCS, this shift relative to UCS as well
+        s2.location = mbcdiff
         s2.shiftAllBeaconLocationsToUCS()
         s2.updateBeaconIdsTo(self)
+        s2.calcBeaconDistancesApart()
         s2.setUCS()
+
+        # sanity check - no other sensor should be at [0,0,0]
+        if s2.sn != 0 and all(s2.location == [0,0,0]):
+            exit("BAD SENSOR LOCATION")
 
 ### Read input data
 so = [] # scanner objects
@@ -267,25 +295,68 @@ with open(input_file, 'r', encoding='utf-8-sig') as fh:
     # add last beacons to last scanner
     so.append(Scanner(sn, beacons))
 
-# the plan is to rotate each scanner to conform with the first scanner (sn0)
-for si1 in range(len(so)):
-    s1 = so[si1]
-    # s1 is expected to use UCS
-    if not s1.ucs:
-        continue
+# check each scanner for a match with every other scanner
+# can only match to those that are tied to Universal Coordinates System (UCS)
+# only sensor id 0 starts as part of UCS and others progressively join
+# and reset their beacon coordinates to UCS progressively
+def searchForMatch():
+    for s1 in so:
+        # s1 must already be on UCS
+        if s1.ucs:
+            for s2 in so:
+                if s2.ucs:
+                    continue
+                # go through all possible scanners that aren't s1
+                if s1 != s2:
+                    # see which beacon distances s1 has with s2 they have in common
+                    s1.findDistMatches(s2)
 
-    for si2 in range(si1, len(so)):
-        s2 = so[si2]
-        # go through all possible scanners that aren't s1
-        if s1 != s2:
-            # see which beacon distances s1 has with s2 they have in common
-            s1.findDistMatches(s2)
-    
+def getUniqueBeacons():
+    # count all the IDS
+    ubd = {} # unique beacon dict
+    for s in so:
+        for bid, xyz in s.beacons.items():
+            ubd[bid] = xyz
+    return ubd
+
+# the main driver loop
+# keeps going until nothing changes for a full matrix check
+last_beacon_count = None
+beacon_count = None
+while not all([s.ucs for s in so]) or last_beacon_count != beacon_count:
+    last_beacon_count = len(getUniqueBeacons())
+    searchForMatch()
+    beacon_count = len(getUniqueBeacons())
+    print("Last beacon count", last_beacon_count)
+    print("Beacon count", beacon_count)
+
+# get all beacon XYZ and then reduce for duplicate coordinates
+bxyz = []
+for s in so:
+    for bid, xyz in s.beacons.items():
+        if str(xyz) not in bxyz:
+            bxyz.append(str(xyz))
 
 ### Part 1
 print("=========== PART 1 ===============")
-print("Part 1 answer", 9999)
+print("Part 1 answer", len(bxyz))
+# guessed 580 - too high
+# guessed 472 - too high
+# guessed 448 - too high
+# guessed 382 - ?? accounting for dupes - perhaps duplicates are more than *2?
 
-### Part 2
+### Part 2 - get all the distances between the sensors
 print("=========== PART 2 ===============")
-print("Part 2 answer", 99999)
+max_distance = None
+for s1 in so:
+    for s2 in so:
+        if s1.sn == s2.sn:
+            continue
+
+        dist = np.array(s1.location, dtype=int) - np.array(s2.location, dtype=int)
+        mdist = sum([abs(v) for v in dist])
+        if max_distance is None or mdist > max_distance:
+            #print(s1.sn, s2.sn, mdist)
+            max_distance = mdist
+
+print("Part 2 answer", max_distance)
