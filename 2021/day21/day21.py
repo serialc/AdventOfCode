@@ -68,15 +68,57 @@ pos = spos.copy()
 # so one player's turn will spawn 27 universes (3 * 3 * 3)
 # with dice sums equal to
 # 3,4,5,6,7,8,9
-# 1,3,6,9,6,3,1 <- distributions
+# 1,3,6,7,6,3,1 <- distributions
+
 roll = np.array([3,4,5,6,7,8,9], dtype=int)
-dist = np.array([1,3,6,9,6,3,1], dtype=int)
+dist = np.array([1,3,6,7,6,3,1], dtype=int)
 
-# after 1 turn
-p1pos = pos[0] + roll
-p1pos[p1pos > 10] = p1pos[p1pos > 10] - 10
-print(p1pos)
+class PlayTurn:
+    def __init__(self, state, games_played, scores, next_player):
+        global game_wins
 
+        print("state", state, "scores", scores)
+
+        self.state = state.copy()
+        self.games_played = games_played
+        self.scores = scores.copy()
+        self.player = next_player
+
+        # for each possible roll calculate the updated scores
+        for i in range(len(roll)):
+            played_games = dist[i] * self.games_played
+            self.state[self.player] = roll[i] + self.state[self.player]
+
+            # reduce to 0-9 if 10 and over
+            # we set those at 10 to 0 but it's fine
+            self.state[self.player] %= 10
+
+            # get the updated score for this set of games
+            if self.state[self.player] == 0:
+                self.scores[self.player] += 10
+            else:
+                self.scores[self.player] += self.state[self.player]
+
+            # determine if this player has won
+            #if self.scores[self.player] > 20:
+            if self.scores[self.player] > 20:
+                game_wins[self.player] += played_games
+                print("Player", self.player, "won", played_games)
+                return
+
+            # determine next player - alternate
+            next_player = 0
+            if self.player == 0:
+                next_player = 1
+
+            # (state, played_games, scores, next_player)
+            PlayTurn(self.state, played_games, self.scores, next_player)
+
+game_wins = [0,0]
+# PlayTurn(state, played_games, scores, next_player)
+PlayTurn(pos, 1, [0,0], 0)
+
+print(game_wins)
 
 
 
