@@ -1,8 +1,8 @@
 import numpy as np
 
 input_file = 'test_input'
-input_file = 'test_input_larger'
-input_file = 'test_input_p2'
+#input_file = 'test_input_larger'
+#input_file = 'test_input_p2'
 #input_file = 'input'
 
 core = np.zeros([101,101,101], dtype=int)
@@ -46,15 +46,16 @@ with open(input_file, 'r') as fh:
                         #print("off", cx,cy,cz)
                         core[cx,cy,cz] = 0
         
-##### PART 2 #####
+##### PART 1 #####
 # How many cubes are in the x=-50..50,y=-50..50,z=-50..50 core?
 print("Part 1")
 print("Final Core sum",np.sum(core))
 
 ##### PART 2 #####
+# Way bigger cube, can't calculate through 3D volume of cells - too big/many
 print("Part 2")
 
-# don't create a full matrix, just sections, each new cuboid impacts previous
+# a cuboid is always a 3D prism of all on values
 
 class Cuboid:
 
@@ -62,11 +63,14 @@ class Cuboid:
         self.xrmin, self.xrmax = xr
         self.yrmin, self.yrmax = yr
         self.zrmin, self.zrmax = zr
+        self.calcSum()
+
+    def calcSum(self):
         self.sum = (
-                (xrmax - xrmin + 1) *
-                (yrmax - yrmin + 1) *
-                (zrmax - zrmax + 1)
-                )
+                (self.xrmax - self.xrmin + 1) *
+                (self.yrmax - self.yrmin + 1) *
+                (self.zrmax - self.zrmax + 1)
+            )
 
     def checkForOverlap(self, newc):
         # Five possibilities * 3
@@ -82,17 +86,50 @@ class Cuboid:
             (newc.zrmin > self.zrmax or newc.zrmax < self.zrmin) ):
             return False
 
-        # check for clo
+        # For all others there is some overlap
+        # need to split cuboid, modify self dimensions
+        return True
+
+    def splitSelf(self, ec):
+        subc = []
+
+        # we use the ec bounds, as these are the slicing values
+        if ec.xrmin > (self.xrmin - 1) and ec.xrmin < (self.xrmax + 1):
+
+
+# splitting concept is good, but not the lead up to that
+def processAddedCuboid(c):
+    global cuboids
+
+    # check existing cuboids for overlap
+    for ec in cuboids:
+        if ec.checkForOverlap(c):
+            # need to split the new cuboid (c) based on ec edges
+            subc = c.splitSelf(ec)
+            if len(subc) == 1:
+
+            # for each subc, resubmit recursively to processAddedCuboid
+            # until it only returns 1 item
+            print(len(subc))
+            exit()
+
 
 cuboids = []
 for i in instr:
     print(i)
+
     if i[0] == 'on':
         # create new cuboid with 'on' volume
         c = Cuboid(i[1], i[2], i[3])
+        # we split added cuboid to 'fit' deleting overlapping parts
+        # c, and its potential splits, are added to the cuboids list
+        processAddedCuboid(c)
 
-        # check existing cuboids for overlap
-        for ec in cuboids:
-            ec.checkForOverlap(c)
+    if i[0] == 'off':
+        # create new cuboid with 'off' volume
+        c = Cuboid(i[1], i[2], i[3])
+        # we split existing cuboids to remove the overlap with c
+        # c is not added to the list
+
 
 
