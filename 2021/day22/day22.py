@@ -46,15 +46,18 @@ with open(input_file, 'r') as fh:
                         #print("off", cx,cy,cz)
                         core[cx,cy,cz] = 0
         
-##### PART 2 #####
+##### PART 1 #####
 # How many cubes are in the x=-50..50,y=-50..50,z=-50..50 core?
 print("Part 1")
 print("Final Core sum",np.sum(core))
 
+
 ##### PART 2 #####
 print("Part 2")
 
-# don't create a full matrix, just sections, each new cuboid impacts previous
+# don't create a full matrix
+# just create list of descriptions of cuboids
+# each new cuboid impacts previous by splitting into new sub-cuboids.
 
 class Cuboid:
 
@@ -69,7 +72,7 @@ class Cuboid:
                 )
 
     def checkForOverlap(self, newc):
-        # Five possibilities * 3
+        # Five possibilities * ~3 dimensions
         #1 --A---A----B---B----------
         #2 ------A----B-A-B----------
         #3 -----------BA-AB----------
@@ -80,19 +83,36 @@ class Cuboid:
         if ( (newc.xrmin > self.xrmax or newc.xrmax < self.xrmin) or 
             (newc.yrmin > self.yrmax or newc.yrmax < self.yrmin) or 
             (newc.zrmin > self.zrmax or newc.zrmax < self.zrmin) ):
-            return False
+            return ['no_overlap']
 
+        # check if the new cuboid is contained within this one
+        if ( (newc.xrmin <= self.xrmin and newc.xrmax <= self.xrmax)
+            (newc.yrmin <= self.yrmin and newc.yrmax <= self.yrmax)
+            (newc.zrmin <= self.zrmin and newc.zrmax <= self.zrmax) ):
+            return ['contained']
+
+        # now for all other situations split the incoming cuboid
         # check for clo
 
 cuboids = []
 for i in instr:
-    print(i)
+    print("Instruction set", i)
+
+    # i = [on_or_off, x,y,z])
+
     if i[0] == 'on':
-        # create new cuboid with 'on' volume
+        # create new cuboid with volume 'on'
         c = Cuboid(i[1], i[2], i[3])
 
-        # check existing cuboids for overlap
+        # check existing cuboids for overlap with cuboid c
+        # need to split them, keep exclusive parts, don't duplicate volumes
         for ec in cuboids:
             ec.checkForOverlap(c)
 
+    if i[0] == 'off':
+        # convert existing cuboids portions to 'off'
+        # by spliting them along the edges of this one
+        # all existing 'on' cuboids
+        # note any 'off' cuboid is deleted
+        pass
 
