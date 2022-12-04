@@ -5,6 +5,23 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 
 ## 2021
 ### Highlights
+
+
+### Comments
+
+2. did it dirty - can optimize with modulo
+3. `ord()` provides the integer of (Unicode) character 
+
+### Tricky problems
+### Tags
+
+1. array subsetting
+2. modulo
+3. character encoding, dictionary
+4. range expansion
+
+## 2021
+### Highlights
 ![Possible probe trajectories for target area](2021/day17/probe_paths.png "Possible probe trajectories for target area")
 
 ![Path through low-ceiling cave](2021/day15/cave_risk_test_input.png "Path through low-ceiling cave")
@@ -39,7 +56,7 @@ Matrix folding of transparent sheet to produce the following:
 * Day 14: Required alternative thinking, flipping the task backwards. Building a dict of all possibilities back up. Then selecting the appropriate items. Also, I need to be more careful when using lists as they pass by reference and not value.
 * Day 16: Quite a nice recursive calculator. Too much reading to figure out the requirements.
 
-#### Tricky problems
+### Tricky problems
 
 * Day 08: A grind, but not as hard as Day 14. 
 * Day 14: Need to carefully work the problem out from the reverse direction.
