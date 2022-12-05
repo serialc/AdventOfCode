@@ -11,6 +11,7 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 
 2. did it dirty - can optimize with modulo
 3. `ord()` provides the integer of (Unicode) character 
+5. `isalpha()` returns true if only characters [a-zA-Z]
 
 ### Tricky problems
 ### Tags
@@ -19,6 +20,7 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 2. modulo
 3. character encoding, dictionary
 4. range expansion
+5. stacks, dictionary
 
 ## 2021
 ### Highlights
