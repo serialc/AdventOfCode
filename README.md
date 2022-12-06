@@ -5,15 +5,18 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 
 ## 2021
 ### Highlights
-
+None yet for 2022
 
 ### Comments
 
 2. did it dirty - can optimize with modulo
 3. `ord()` provides the integer of (Unicode) character 
 5. `isalpha()` returns true if only characters [a-zA-Z]
+6. Easy but not efficient
 
 ### Tricky problems
+None yet for 2022
+
 ### Tags
 
 1. array subsetting
@@ -21,6 +24,7 @@ Starting a new year? Create all the directories for each day with `mkdir day{01.
 3. character encoding, dictionary
 4. range expansion
 5. stacks, dictionary
+6. sliding-window
 
 ## 2021
 ### Highlights
