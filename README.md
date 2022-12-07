@@ -13,6 +13,7 @@ None yet for 2022
 3. `ord()` provides the integer of (Unicode) character 
 5. `isalpha()` returns true if only characters [a-zA-Z]
 6. Easy but not efficient
+7. Classes FTW
 
 ### Tricky problems
 None yet for 2022
@@ -25,6 +26,7 @@ None yet for 2022
 4. range expansion
 5. stacks, dictionary
 6. sliding-window
+7. parsing, classes, recursion, file-system
 
 ## 2021
 ### Highlights
