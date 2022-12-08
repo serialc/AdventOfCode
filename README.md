@@ -14,6 +14,7 @@ None yet for 2022
 5. `isalpha()` returns true if only characters [a-zA-Z]
 6. Easy but not efficient
 7. Classes FTW
+8. Probably a much nicer/smarter way of doing this
 
 ### Tricky problems
 None yet for 2022
@@ -27,6 +28,7 @@ None yet for 2022
 5. stacks, dictionary
 6. sliding-window
 7. parsing, classes, recursion, file-system
+8. mapping, matrices, catchment, view-sheds
 
 ## 2021
 ### Highlights
