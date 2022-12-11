@@ -29,6 +29,7 @@ None yet for 2022
 6. sliding-window
 7. parsing, classes, recursion, file-system
 8. mapping, matrices, catchment, view-sheds
+9. mapping
 
 ## 2021
 ### Highlights
