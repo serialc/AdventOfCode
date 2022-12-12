@@ -56,7 +56,7 @@ with open('input.txt', 'r') as fh:
             cmax[2] = y
         if x < cmax[3]:
             cmax[3] = x
-        print(x,y)
+        #print(x,y)
 
 shape = [1 + cmax[0] - cmax[2], 1 + cmax[1] - cmax[3]]
 # need to start in the middle, not a corner otherwise we go off map
@@ -84,7 +84,7 @@ def flailTail(dim, tlen):
 
     for i in instr:
         d,c = i
-        print("Instruction: ",d,c)
+        #print("Instruction: ",d,c)
 
         while c > 0:
             # move head
@@ -133,8 +133,8 @@ def flailTail(dim, tlen):
             c -= 1
 
     #print("Final Head Map")
-    print("Final Tail Map")
-    printMap(tmap, n, False)
+    #print("Final Tail Map")
+    #printMap(tmap, n, False)
 
     return tmap
 
@@ -153,3 +153,27 @@ tmap10 = flailTail(shape, 10)
 print("#### Part 2 ####")
 print("Part 2 answer: " + str(np.sum(tmap10 > 0)))
 # guess 2494, too low
+
+
+print("Generating image")
+
+from PIL import Image
+
+imgmin = 500
+magnification = 1
+while (tmap10.shape[1] * magnification) < imgmin:
+    magnification *= 2
+
+cmult = int(255/np.max(tmap10))
+
+im = Image.new('RGB', (tmap10.shape[1]*magnification,tmap10.shape[0]*magnification))
+pixellist = []
+for r in reversed(range(tmap10.shape[0])):
+    for i in range(magnification):
+        for c in range(tmap10.shape[1]):
+            for j in range(magnification):
+                v = cmult * tmap10[r,c]
+                pixellist.append((v,v,v))
+
+im.putdata(pixellist)
+im.save('rope_model.png')
