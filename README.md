@@ -15,6 +15,7 @@ None yet for 2022
 6. Easy but not efficient
 7. Classes FTW
 8. Probably a much nicer/smarter way of doing this
+10. Buggy on the left but works
 
 ### Tricky problems
 None yet for 2022
@@ -30,6 +31,7 @@ None yet for 2022
 7. parsing, classes, recursion, file-system
 8. mapping, matrices, catchment, view-sheds
 9. mapping
+10. sequence matters, clock steps
 
 ## 2021
 ### Highlights
