@@ -16,6 +16,7 @@ None yet for 2022
 7. Classes FTW
 8. Probably a much nicer/smarter way of doing this
 10. Buggy on the left but works
+12. Assumption that you can only go down by max 1 was erroneous
 
 ### Tricky problems
 None yet for 2022
@@ -32,6 +33,8 @@ None yet for 2022
 8. mapping, matrices, catchment, view-sheds
 9. mapping
 10. sequence matters, clock steps
+11. -
+12. mapping
 
 ## 2021
 ### Highlights
