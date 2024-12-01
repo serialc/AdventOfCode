@@ -21,8 +21,7 @@ for t,dr in races:
 
     wins = 0
     for s in range(t+1):
-       rt = t - s
-       d = s * rt
+       d = s * (t - s)
        if d > dr:
            wins += 1
 
@@ -49,8 +48,7 @@ dr = int(lines[1])
 
 wins = 0
 for s in range(t+1):
-   rt = t - s
-   d = s * rt
+   d = s * (t - s)
    if d > dr:
        wins += 1
 
