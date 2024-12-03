@@ -1,7 +1,8 @@
 # 2023
 ## Highlights
 
-Day:
+
+![Catching animal in pipes - inside area of pipes](day10/day10.gif "Flood area")
 
 ### Comments
 
@@ -12,6 +13,7 @@ Day:
 7. Nitty gritty.
 8. For part 2 needed to see that they would loop at different (but regular!) rates and take a long time to match. Had to determine individual counts and the figure out lowest common multiple (LCM).
 9. Fine - difference pyramids.
+10. Finnicky. Using characters to symbolize pipe shapes is suboptimal.
 
 ### Tags
 
@@ -22,3 +24,4 @@ Day:
 7. hex, grind
 8. efficiency, math
 9. numpy, difference
+10. map, cellular automata, recursion
