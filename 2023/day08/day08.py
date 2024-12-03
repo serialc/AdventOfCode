@@ -92,6 +92,9 @@ for i in range(len(pathcounts)):
         if pc%n == 0:
             pcf.append(n)
             pc = int(pc/n)
+            # try again with the same n
+            # otherwise would return factors 2,4 for 8, rather than 2,2,2
+            continue
         n += 1
     factors.append(pcf)
 
