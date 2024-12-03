@@ -11,6 +11,7 @@ Day:
 6. Probably a simple formula to solve efficiently
 7. Nitty gritty.
 8. For part 2 needed to see that they would loop at different (but regular!) rates and take a long time to match. Had to determine individual counts and the figure out lowest common multiple (LCM).
+9. Fine - difference pyramids.
 
 ### Tags
 
@@ -20,3 +21,4 @@ Day:
 6. calculation, equation
 7. hex, grind
 8. efficiency, math
+9. numpy, difference
