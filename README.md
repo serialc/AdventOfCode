@@ -24,3 +24,20 @@ My [Advent of Code](https://adventofcode.com/) solutions
 ### 2020
 ![A hexagonal cellular automata](2020/day24/tiles_anim.gif "A hexagonal cellular automata")
 ![Sea Monster Map](2020/day20/seamonsters.png "Sea Monster map")
+
+
+## Tips for me
+
+### Create animated gifs
+Use terminal:
+
+    convert -delay 10 -loop 0 *.png anim.gif
+
+The 0 means infinite.
+
+### Create all my day folders
+
+Starting a new year?  
+Create all the directories for each day with:
+
+    mkdir day{01..25}

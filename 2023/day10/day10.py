@@ -3,6 +3,35 @@ from PIL import Image
 #import re
 import sys
 
+pid = 1
+def makeFrame(mat):
+    global pid
+    resmult = 1
+    im = Image.new('RGB', (mat.shape[0]*resmult, mat.shape[1]*resmult))
+
+    # make image frame
+    pixellist = []
+    for y in range(mat.shape[0]):
+        for mult in range(resmult):
+            for x in range(mat.shape[1]):
+                col = (255,255,255)
+                if mat.dtype == 'int64':
+                    dig = int(mat[y,x])
+                    if dig != 0:
+                        col = (0,0,0)
+                if mat[y,x] == '.':
+                    col = (0,0,0)
+                if mat[y,x] == 'L':
+                    col = (255,128,128)
+                if mat[y,x] == 'R':
+                    col = (128,255,128)
+
+                for mult in range(resmult):
+                    pixellist.append(col)
+
+    im.putdata(pixellist)
+    im.save("imgs/img_" + "0"*(3 - len(str(pid))) + str(pid) + ".png")
+    pid += 1
 
 def matPrint(mat, sep=''):
     nh, nw = mat.shape
@@ -43,6 +72,12 @@ smap = np.zeros([len(pmap), len(pmap[0])], dtype=int)
 
 def route(y, x, d, scorch=False):
     smap[y, x] = d
+
+    if d%100 == 0:
+        if scorch:
+            makeFrame(rmap)
+        else:
+            makeFrame(smap)
 
     # which directions does my pipe go?
     # will only go one way
@@ -184,8 +219,6 @@ route(start[0], start[1], 1, True)
 #symmap = pmap
 #symmap[smap == 0] = ' '
 #matPrint(symmap)
-resmult = 8
-im = Image.new('RGB', (rmap.shape[0]*resmult, rmap.shape[1]*resmult))
 
 # copy for animation, slows processing
 rmap2 = rmap.copy()
@@ -209,26 +242,9 @@ while True:
                     rmap2[y,x] = rmap[y,x+1]
                     expansion += 1
 
+    makeFrame(rmap)
+
     rmap = rmap2.copy()
-
-    # make image
-    pixellist = []
-    for y in range(rmap.shape[0]):
-        for mult in range(resmult):
-            for x in range(rmap.shape[1]):
-                col = (0,0,0)
-                if rmap[y,x] == '.':
-                    col = (255,255,255)
-                if rmap[y,x] == 'L':
-                    col = (255,128,128)
-                if rmap[y,x] == 'R':
-                    col = (128,255,128)
-
-                for mult in range(resmult):
-                    pixellist.append(col)
-
-    im.putdata(pixellist)
-    im.save("imgs/flood_" + "0"*(3 - len(str(steps))) + str(steps) + ".png")
 
     steps += 1
     if expansion == 0:
