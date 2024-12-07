@@ -127,7 +127,7 @@ sol1 = walkGuard()
 
 print("#### Part 1 ####")
 print("Answer is:", np.sum(sol1 > 0))
-# 4662 too low - 
+# 4662 too low - forgot to save the start location, off by one!
 
 
 #### PART 2 ####
