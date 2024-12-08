@@ -1,4 +1,6 @@
-import numpy as np
+"""Solves Advent of Code 2024 Day 7."""
+
+# import numpy as np
 # import re
 
 input_file = 'input0'
@@ -6,7 +8,15 @@ input_file = 'input'
 
 
 def EquSolve(val, comp, ops=[], p2=False):
+    """
+    Return whether a value is attainable with a set of numbers.
 
+    Pass a value, numbers (comp), and whether you want to use the
+    concatenation operator as well '||'. It will determine which
+    values are possible with the given numbers.
+
+    Returns True/False.
+    """
     if len(ops) == (len(comp) - 1):
         for op in ops:
             # reduce multiplications
@@ -47,8 +57,8 @@ with open(input_file, 'r') as fh:
         if line == '':
             continue
 
-        val, eqn = line.split(': ')
-        val = int(val)
+        strval, eqn = line.split(': ')
+        val = int(strval)
         comp = list(map(int, eqn.split(' ')))
 
         # reverse list to make debug easier
@@ -74,8 +84,8 @@ with open(input_file, 'r') as fh:
         if line == '':
             continue
 
-        val, eqn = line.split(': ')
-        val = int(val)
+        strval, eqn = line.split(': ')
+        val = int(strval)
         comp = list(map(int, eqn.split(' ')))
 
         # reverse list to make debug easier

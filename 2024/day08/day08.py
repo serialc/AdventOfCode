@@ -1,8 +1,16 @@
+"""Solves Advent of Code Day08."""
+
 import numpy as np
 # import re
 
 
 def matPrint(mat, sep=''):
+    """
+    Print a matrix nicely.
+
+    Takes a numpy 2d array and prints values in a variable
+    dense manner.
+    """
     nh, nw = mat.shape
     print("Dimension", nh, nw)
 
@@ -14,6 +22,12 @@ def matPrint(mat, sep=''):
 
 # build a frequency dictionary
 def makeFreqDict(mat):
+    """
+    Get item frequency.
+
+    Takes a numpy array and returns a dict with
+    items as keys and the frequency as the value
+    """
     fd = dict()
     for row in mat:
         for item in row:
@@ -28,7 +42,7 @@ input_file = 'input0'
 input_file = 'input'
 
 
-surf = []
+lsurf = []
 with open(input_file, 'r') as fh:
     for line in fh:
         line = line.strip('\n')
@@ -36,9 +50,9 @@ with open(input_file, 'r') as fh:
         if line == '':
             continue
 
-        surf.append(list(line))
+        lsurf.append(list(line))
 
-surf = np.array(surf)
+surf = np.array(lsurf)
 matPrint(surf)
 
 
@@ -53,7 +67,7 @@ antinodes = np.zeros(surf.shape, dtype=int)
 # for each antenna class
 for ant in afreq:
 
-    #print('Processing', ant)
+    # print('Processing', ant)
 
     if afreq[ant] == 1:
         print("Skipping as this antenna class only has one member")
@@ -62,7 +76,7 @@ for ant in afreq:
     antlocs = np.where(surf == ant)
     # antlocs is a list of two lists ((y,...), (x,...))
 
-    #matPrint((surf == ant) * 1)
+    # matPrint((surf == ant) * 1)
 
     # for each antenna
     for i in range(len(antlocs[0])):
@@ -103,7 +117,7 @@ antinodes = np.zeros(surf.shape, dtype=int)
 # for each antenna class
 for ant in afreq:
 
-    #print('Processing', ant)
+    # print('Processing', ant)
 
     if afreq[ant] == 1:
         print("Skipping as this antenna class only has one member")
@@ -112,7 +126,7 @@ for ant in afreq:
     antlocs = np.where(surf == ant)
     # antlocs is a list of two lists ((y,...), (x,...))
 
-    #matPrint((surf == ant) * 1)
+    # matPrint((surf == ant) * 1)
 
     # for each antenna
     for i in range(len(antlocs[0])):
