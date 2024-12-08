@@ -1,17 +1,19 @@
+"""AoC 2024 - Day 2."""
+
 import numpy as np
 
-input_file = 'input0'
-input_file = 'input'
+input_file = "input0"
+input_file = "input"
 
 safecount = 0
-with open(input_file, 'r') as fh:
-    for l in fh:
-        l = l.strip('\n')
+with open(input_file, "r") as fh:
+    for line in fh:
+        line = line.strip("\n")
 
-        if l == '':
+        if line == "":
             continue
 
-        lvls = np.array(list(map(int, l.split())))
+        lvls = np.array(list(map(int, line.split())))
         diffs = np.diff(lvls)
 
         if (np.all(diffs > 0) or np.all(diffs < 0)) and np.all(np.abs(diffs) <= 3):
@@ -20,18 +22,18 @@ with open(input_file, 'r') as fh:
 print("#### Part 1 ####")
 print("Answer is:", safecount)
 
-#### PART 2 ####
+# PART 2 ####
 print("============ Part 2 start ================")
 
 safecount = 0
-with open(input_file, 'r') as fh:
-    for l in fh:
-        l = l.strip('\n')
+with open(input_file, "r") as fh:
+    for line in fh:
+        line = line.strip("\n")
 
-        if l == '':
+        if line == "":
             continue
 
-        lvls = np.array(list(map(int, l.split())))
+        lvls = np.array(list(map(int, line.split())))
         diffs = np.diff(lvls)
 
         if (np.all(diffs > 0) or np.all(diffs < 0)) and np.all(np.abs(diffs) <= 3):

@@ -1,10 +1,11 @@
 """Solves Advent of Code Day08."""
 
 import numpy as np
+
 # import re
 
 
-def matPrint(mat, sep=''):
+def matPrint(mat, sep=""):
     """
     Print a matrix nicely.
 
@@ -16,7 +17,7 @@ def matPrint(mat, sep=''):
 
     for y in range(nh):
         for x in range(nw):
-            print(str(mat[y, x]) + sep, end='')
+            print(str(mat[y, x]) + sep, end="")
         print()
 
 
@@ -38,16 +39,16 @@ def makeFreqDict(mat):
     return fd
 
 
-input_file = 'input0'
-input_file = 'input'
+input_file = "input0"
+input_file = "input"
 
 
 lsurf = []
-with open(input_file, 'r') as fh:
+with open(input_file, "r") as fh:
     for line in fh:
-        line = line.strip('\n')
+        line = line.strip("\n")
 
-        if line == '':
+        if line == "":
             continue
 
         lsurf.append(list(line))
@@ -59,7 +60,7 @@ matPrint(surf)
 # get the list of antennas
 afreq = makeFreqDict(surf)
 # don't want '.' item
-del afreq['.']
+del afreq["."]
 
 # save our solutions here
 antinodes = np.zeros(surf.shape, dtype=int)
@@ -93,12 +94,20 @@ for ant in afreq:
             dx = a2x - ax
 
             # try to add a antinode at the opposing sides
-            if ((ay - dy) >= 0 and (ay - dy) < surf.shape[0] and
-                    (ax - dx) >= 0 and (ax - dx) < surf.shape[1]):
+            if (
+                (ay - dy) >= 0
+                and (ay - dy) < surf.shape[0]
+                and (ax - dx) >= 0
+                and (ax - dx) < surf.shape[1]
+            ):
                 antinodes[(ay - dy), (ax - dx)] += 1
 
-            if ((a2y + dy) >= 0 and (a2y + dy) < surf.shape[0] and
-                    (a2x + dx) >= 0 and (a2x + dx) < surf.shape[1]):
+            if (
+                (a2y + dy) >= 0
+                and (a2y + dy) < surf.shape[0]
+                and (a2x + dx) >= 0
+                and (a2x + dx) < surf.shape[1]
+            ):
                 antinodes[(a2y + dy), (a2x + dx)] += 1
 
 matPrint(antinodes)
@@ -157,13 +166,21 @@ for ant in afreq:
                 dx = px * dist
 
                 # try to add an antinode at the opposing sides
-                if ((ay - dy) >= 0 and (ay - dy) < surf.shape[0] and
-                        (ax - dx) >= 0 and (ax - dx) < surf.shape[1]):
+                if (
+                    (ay - dy) >= 0
+                    and (ay - dy) < surf.shape[0]
+                    and (ax - dx) >= 0
+                    and (ax - dx) < surf.shape[1]
+                ):
                     anyf = True
                     antinodes[(ay - dy), (ax - dx)] += 1
 
-                if ((a2y + dy) >= 0 and (a2y + dy) < surf.shape[0] and
-                        (a2x + dx) >= 0 and (a2x + dx) < surf.shape[1]):
+                if (
+                    (a2y + dy) >= 0
+                    and (a2y + dy) < surf.shape[0]
+                    and (a2x + dx) >= 0
+                    and (a2x + dx) < surf.shape[1]
+                ):
                     anyf = True
                     antinodes[(a2y + dy), (a2x + dx)] += 1
 

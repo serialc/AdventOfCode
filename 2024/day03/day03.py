@@ -1,20 +1,22 @@
-#import numpy as np
+"""AoC 2024 - Day 3."""
+
+# import numpy as np
 import re
 
-input_file = 'input0'
-input_file = 'input'
+input_file = "input0"
+input_file = "input"
 
 prod = 0
-with open(input_file, 'r') as fh:
-    for l in fh:
-        l = l.strip('\n')
+with open(input_file, "r") as fh:
+    for line in fh:
+        line = line.strip("\n")
 
-        if l == '':
+        if line == "":
             continue
 
-        mulmatches = re.findall(r"(mul\((\d+),(\d+)\))", l)
+        mulmatches = re.findall(r"(mul\((\d+),(\d+)\))", line)
         for m in mulmatches:
-            #print(m[0])
+            # print(m[0])
             if len(m[1]) > 3 or len(m[2]) > 3:
                 print("Skipping! Digit too long!")
                 continue
@@ -26,24 +28,24 @@ print("Answer is:", prod)
 # too low - 30902624, had only looked at first line!
 
 
-#### PART 2 ####
+# PART 2 ####
 print("============ Part 2 start ================")
 
-input_file = 'input1'
-input_file = 'input'
+input_file = "input1"
+input_file = "input"
 
 prod = 0
-with open(input_file, 'r') as fh:
+with open(input_file, "r") as fh:
     do = True
-    for l in fh:
-        l = l.strip('\n')
+    for line in fh:
+        line = line.strip("\n")
 
-        if l == '':
+        if line == "":
             continue
 
-        mulmatches = re.findall(r"(mul\((\d+),(\d+)\))|(do)\(\)|(don)\'t\(\)", l)
+        mulmatches = re.findall(r"(mul\((\d+),(\d+)\))|(do)\(\)|(don)\'t\(\)", line)
         for m in mulmatches:
-            #print(m)
+            # print(m)
             if m[3] == "do":
                 do = True
                 continue

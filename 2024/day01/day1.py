@@ -1,17 +1,19 @@
-input_file = 'input0'
-input_file = 'input'
+"""AoC 2024 - Day 1."""
+
+input_file = "input0"
+input_file = "input"
 
 l1 = []
 l2 = []
 
-with open(input_file, 'r') as fh:
-    for l in fh:
-        l = l.strip('\n')
+with open(input_file, "r") as fh:
+    for line in fh:
+        line = line.strip("\n")
 
-        if l == '':
+        if line == "":
             continue
 
-        p = l.split('   ');
+        p = line.split("   ")
         l1.append(int(p[0]))
         l2.append(int(p[1]))
 
@@ -25,7 +27,7 @@ for i in range(len(l1)):
 print("#### Part 1 ####")
 print("Answer is:", str(ldiffsum))
 
-#### PART 2 ####
+# PART 2 ####
 print("============ Part 2 start ================")
 
 # build a frequency dictionary

@@ -3,8 +3,8 @@
 # import numpy as np
 # import re
 
-input_file = 'input0'
-input_file = 'input'
+input_file = "input0"
+input_file = "input"
 
 
 def EquSolve(val, comp, ops=[], p2=False):
@@ -20,16 +20,16 @@ def EquSolve(val, comp, ops=[], p2=False):
     if len(ops) == (len(comp) - 1):
         for op in ops:
             # reduce multiplications
-            if op == '*':
+            if op == "*":
                 # careful
                 comp[0] = comp[0] * comp.pop(1)
 
             # reduce sums
-            if op == '+':
+            if op == "+":
                 comp[0] = comp[0] + comp.pop(1)
 
             # concatenate
-            if op == '||':
+            if op == "||":
                 comp[0] = int(str(comp[0]) + str(comp.pop(1)))
 
         if comp[0] == val:
@@ -38,28 +38,28 @@ def EquSolve(val, comp, ops=[], p2=False):
         return False
 
     # pass copies, otherwise you're modifying the same object
-    if EquSolve(val, comp.copy(), ops.copy() + ['+'], p2):
+    if EquSolve(val, comp.copy(), ops.copy() + ["+"], p2):
         return True
-    if EquSolve(val, comp.copy(), ops.copy() + ['*'], p2):
+    if EquSolve(val, comp.copy(), ops.copy() + ["*"], p2):
         return True
     if p2:
-        if EquSolve(val, comp.copy(), ops.copy() + ['||'], p2):
+        if EquSolve(val, comp.copy(), ops.copy() + ["||"], p2):
             return True
 
     return False
 
 
 truesum = 0
-with open(input_file, 'r') as fh:
+with open(input_file, "r") as fh:
     for line in fh:
-        line = line.strip('\n')
+        line = line.strip("\n")
 
-        if line == '':
+        if line == "":
             continue
 
-        strval, eqn = line.split(': ')
+        strval, eqn = line.split(": ")
         val = int(strval)
-        comp = list(map(int, eqn.split(' ')))
+        comp = list(map(int, eqn.split(" ")))
 
         # reverse list to make debug easier
         if EquSolve(val, comp.copy()):
@@ -77,16 +77,16 @@ print("Answer is:", truesum)
 print("============ Part 2 start ================")
 
 truesum = 0
-with open(input_file, 'r') as fh:
+with open(input_file, "r") as fh:
     for line in fh:
-        line = line.strip('\n')
+        line = line.strip("\n")
 
-        if line == '':
+        if line == "":
             continue
 
-        strval, eqn = line.split(': ')
+        strval, eqn = line.split(": ")
         val = int(strval)
-        comp = list(map(int, eqn.split(' ')))
+        comp = list(map(int, eqn.split(" ")))
 
         # reverse list to make debug easier
         if EquSolve(val, comp.copy(), p2=True):
