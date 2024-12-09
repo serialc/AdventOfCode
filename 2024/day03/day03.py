@@ -14,13 +14,9 @@ with open(input_file, "r") as fh:
         if line == "":
             continue
 
-        mulmatches = re.findall(r"(mul\((\d+),(\d+)\))", line)
+        # search for 1-3 digits (merci Aurélien G.!)
+        mulmatches = re.findall(r"(mul\((\d{1,3}),(\d{1,3})\))", line)
         for m in mulmatches:
-            # print(m[0])
-            if len(m[1]) > 3 or len(m[2]) > 3:
-                print("Skipping! Digit too long!")
-                continue
-
             prod += int(m[1]) * int(m[2])
 
 print("#### Part 1 ####")
