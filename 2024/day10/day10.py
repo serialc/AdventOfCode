@@ -1,4 +1,4 @@
-"""AoC 2024 Day 8."""
+"""AoC 2024 Day 10."""
 
 import numpy as np
 
