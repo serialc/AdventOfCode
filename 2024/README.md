@@ -15,6 +15,9 @@ Day:
 6. Matrix routing - determine path
 7. Math operations - recursion
 8. Matrix distance repitition
+9. Disc defragmentation - not very efficient solution
+10. Von Neumann neighborhood elevation search
+11. Ouch, took a long detour to reach memoization
 
 ### Tags
 
@@ -28,3 +31,6 @@ Day:
 6. numpy, surface
 7. recursion, math, operations
 8. numpy, surface
+9. list, re-sequencing
+10. map, elevation, recursion
+11. recursion, memoization

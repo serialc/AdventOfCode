@@ -31,7 +31,7 @@ print("Answer is:", str(ldiffsum))
 print("============ Part 2 start ================")
 
 # build a frequency dictionary
-l2freq = dict()
+l2freq = dict()  # type: dict[int, int]
 for v in l2:
     if v in l2freq:
         l2freq[v] += 1

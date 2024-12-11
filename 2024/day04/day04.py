@@ -6,7 +6,7 @@ import numpy as np
 
 
 def matPrint(mat, sep=""):
-    """Print matrix in nice format"""
+    """Print matrix in nice format."""
     nh, nw = mat.shape
     print("Dimension", nh, nw)
 

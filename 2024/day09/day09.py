@@ -6,7 +6,7 @@
 input_file = "input0"
 input_file = "input"
 
-disc = []
+disc = []  # type: list
 with open(input_file, "r") as fh:
     for line in fh:
         line = line.strip("\n")

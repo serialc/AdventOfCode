@@ -94,7 +94,7 @@ with open(input_file, "r") as fh:
         stones_list = list(map(int, line.split(" ")))
 
 # save any work done: value, depth
-stone_solution = {}
+stone_solution = {}  # type: dict[str, int]
 
 iterations = 25
 stone_sum = 0
