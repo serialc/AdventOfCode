@@ -18,6 +18,7 @@ Day:
 9. Disc defragmentation - not very efficient solution
 10. Von Neumann neighborhood elevation search
 11. Ouch, took a long detour to reach memoization
+12. P2 complexities are very problematic
 
 ### Tags
 
@@ -34,3 +35,4 @@ Day:
 9. list, re-sequencing
 10. map, elevation, recursion
 11. recursion, memoization
+12. map, recursion, neighbours
