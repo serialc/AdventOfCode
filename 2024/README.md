@@ -14,11 +14,12 @@ Day:
 5. Ordering rules and fixing sequence orders.
 6. Matrix routing - determine path
 7. Math operations - recursion
-8. Matrix distance repitition
+8. Matrix distance repetition
 9. Disc defragmentation - not very efficient solution
 10. Von Neumann neighborhood elevation search
 11. Ouch, took a long detour to reach memoization
 12. P2 complexities are very problematic
+20. Maze solving and shortcuts
 
 ### Tags
 
@@ -36,3 +37,4 @@ Day:
 10. map, elevation, recursion
 11. recursion, memoization
 12. map, recursion, neighbours
+20. map, numpy, surface, recursion, identity
