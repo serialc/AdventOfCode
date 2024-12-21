@@ -19,6 +19,7 @@ Day:
 10. Von Neumann neighborhood elevation search
 11. Ouch, took a long detour to reach memoization
 12. P2 complexities are very problematic
+18. Path routing with area closing progressively
 19. Memoization to the rescue. Matching values to longer string.
 20. Maze solving and shortcuts
 
@@ -38,5 +39,6 @@ Day:
 10. map, elevation, recursion
 11. recursion, memoization
 12. map, recursion, neighbours
+18. cellular automata, recursion, map, numpy, path finding
 19. recursion, memoization
 20. map, numpy, surface, recursion, identity
