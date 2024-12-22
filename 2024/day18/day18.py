@@ -1,4 +1,4 @@
-"""AoC 2024 Day 20."""
+"""AoC 2024 Day 18."""
 
 import numpy as np
 import sys
