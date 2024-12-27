@@ -19,8 +19,8 @@ Day:
 10. Von Neumann neighborhood elevation search
 11. Ouch, took a long detour to reach memoization
 12. P2 complexities are very problematic
-13. -
-14. -
+13. Two equations - two unknowns - solve
+14. Mapping robot positions and then looking for pattern
 15. -
 16. Branching route finding
 17. -
@@ -45,8 +45,8 @@ Day:
 10. map, elevation, recursion
 11. recursion, memoization
 12. map, recursion, neighbours
-13. -
-14. -
+13. math, equations
+14. map, movement, pattern detection
 15. -
 16. map, recursion, routefinding
 17. -
