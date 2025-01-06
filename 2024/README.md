@@ -21,9 +21,9 @@ Day:
 12. P2 complexities are very problematic
 13. Two equations - two unknowns - solve
 14. Mapping robot positions and then looking for pattern
-15. -
+15. Robot pushing boxes around - boxes get bigger in part 2
 16. Branching route finding
-17. -
+17. 3-bit computer with opcodes and operands, bitwise operations
 18. Path routing with area closing progressively
 19. Memoization to the rescue. Matching values to longer string.
 20. Maze solving and shortcuts
@@ -47,9 +47,9 @@ Day:
 12. map, recursion, neighbours
 13. math, equations
 14. map, movement, pattern detection
-15. -
+15. map, movement, pushing objects
 16. map, recursion, routefinding
-17. -
+17. bitwise operations, XOR, bit-shift
 18. cellular automata, recursion, map, numpy, path finding
 19. recursion, memoization
 20. map, numpy, surface, recursion, identity

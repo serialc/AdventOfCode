@@ -121,16 +121,13 @@ def remoteRequest(key, depth, dtarget, curr="A"):
             keycom.append(abs(vshift) * "v")
         if hshift > 0:
             keycom.append(hshift * "<")
-        if hshift < 0:
-            keycom.append(abs(hshift) * ">")
-        if vshift > 0:
-            keycom.append(vshift * "^")
     else:
         # order matters - farthest from 'A' first
         if hshift > 0:
             keycom.append(hshift * "<")
         if vshift < 0:
             keycom.append(abs(vshift) * "v")
+        # need the > before the ^ so if we're at <, we don't go over the blank
         if hshift < 0:
             keycom.append(abs(hshift) * ">")
         if vshift > 0:
@@ -164,6 +161,7 @@ input_file = "input"
 input_file = "input0"
 
 complexities = []  # type: list[int]
+direction_bots = 2
 with open(input_file, "r") as fh:
     for line in fh:
         line = line.strip("\n")
@@ -171,16 +169,16 @@ with open(input_file, "r") as fh:
         if line == "":
             continue
 
-        print(line)
+        print(line, end=" ")
         # determine keypad instructions
         kpi = keypadRequest(line)
-        print(kpi)
+        print(kpi, end=" ")
 
         inst_count = 0
         currk = "A"
         for k in list(kpi):
             # print("Instruction", k)
-            inst_count += remoteRequest(k, depth=0, dtarget=2, curr=currk)
+            inst_count += remoteRequest(k, depth=0, dtarget=direction_bots, curr=currk)
             currk = k
 
         print(inst_count)
@@ -195,6 +193,9 @@ print("============ Part 2 start ================")
 
 complexities.clear()
 
+# we have one bot on the keypad
+direction_bots = 24
+direction_bots = 4
 with open(input_file, "r") as fh:
     for line in fh:
         line = line.strip("\n")
@@ -202,7 +203,7 @@ with open(input_file, "r") as fh:
         if line == "":
             continue
 
-        print(line)
+        print(line, end=" ")
 
         # determine keypad instructions
         kpi = keypadRequest(line)
@@ -211,7 +212,7 @@ with open(input_file, "r") as fh:
         currk = "A"
         for k in list(kpi):
             # print("Instruction", k)
-            inst_count += remoteRequest(k, depth=0, dtarget=4, curr=currk)
+            inst_count += remoteRequest(k, depth=0, dtarget=direction_bots, curr=currk)
             currk = k
 
         print(inst_count)
@@ -231,4 +232,4 @@ print("#### Part 2 ####")
 print("Answer is:", sum(complexities))
 print("input0 should equal to 154115708116294")
 # 214633893742472 - too high: Did I do too many recursions?
-# 85744151484734 - too low: Used 24, no, definitely not.
+# 85744151484734 - too low: No.
