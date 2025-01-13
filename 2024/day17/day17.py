@@ -47,7 +47,7 @@ with open(input_file, "r") as fh:
             continue
 
 
-print(a, b, c, prog)
+print("Input:", a, b, c, prog, "\n")
 
 
 # Run the program
@@ -58,7 +58,11 @@ def processProg(a, b, c, prog, brute=False):
         op = prog[pnt]
         lop = prog[pnt + 1]
         cop = lop
+
+        # increments the pointer for the following pass
         pnt += 2
+
+        print("Pointer", pnt - 2, end=": ")
 
         # determine the combo operand
         if lop == 4:
@@ -72,32 +76,36 @@ def processProg(a, b, c, prog, brute=False):
         #  "and combo operand", cop,)
 
         if op == 0:
-            # print(a, "div by 2 to power", cop)
+            print(a, "right-shifted *", cop, end=" and ")
             # a = int(a / pow(2, cop))
             # this is the same as bit shifting!
             a = a >> cop
-            # print("Store in register a:", a)
+            print("store in register a=", a)
         if op == 1:
             # bitwise xor of b and lop
             # print("bit XOR of", b, lop)
             b = b ^ lop
             # print("resolves to", b)
         if op == 2:
-            # print(cop, "modulo 8")
+            print(cop, "modulo 8", end=" ")
             b = cop % 8
-            # print("resolves to", b)
+            print("resolves to", b)
         if op == 3:
+            # when a is 0 the program will pass through this 'gate'
             if a != 0:
                 # set the pointer to the value of the previous instruction (back one)
                 pnt = lop
-                # print("Set pointer to", pnt)
+                print("Set pointer to", pnt)
+            else:
+                print("Passing through pointer reset")
+
         if op == 4:
             # bitwise xor of b and c
-            # print("bit XOR of", b, c)
+            print("bit XOR of", b, c, end=" ")
             b = b ^ c
-            # print("resolves to", b)
+            print("resolves to", b)
         if op == 5:
-            # print("Added ", cop, "% 8 =", cop % 8, "to output")
+            print("Added ", cop, "% 8 =", cop % 8, "to output")
             output.append(cop % 8)
 
             # check if we the output is replicating the program
@@ -110,16 +118,17 @@ def processProg(a, b, c, prog, brute=False):
                     return False
 
         if op == 6:
-            # print(a, "div by 2 to power", cop)
+            print(a, "right-shifted *", cop, end=" ")
             b = a >> cop
             # b = int(a / pow(2, cop))
-            # print("Store in register b:", b)
+            print("Store in register b=", b)
         if op == 7:
-            # print(a, "div by 2 to power", cop)
+            print(a, "right-shifted *", cop, end=" ")
             c = a >> cop
             # c = int(a / pow(2, cop))
-            # print("Store in register c:", c)
+            print("Store in register c=", c)
 
+    print("Finished")
     return output
 
 
@@ -149,8 +158,14 @@ print(prog)
 # (4,3) bit XOR B ^ C -> B: b = c +/- 7
 # (5,5) modulo B by 8 -> out: B = x * 8 + 2
 
+# Let's try from the end, going backwards - register A=0
+# need to output a zero (last digit)
+# left shift << by 3 (choose a number 0-7)
+# write the %8 value of register B (so B has a value that is a multiple of 8)
+
 
 def solveP2():
+    """Brute force. Try all numbers by incrementation."""
     regA = 1308958392320
     # regA = 0
     notif = 2**25
@@ -173,6 +188,7 @@ def solveP2():
 
 # Being a brute won't work here
 # soln = solveP2()
+soln = "Unsolved"
 
 print("#### Part 2 ####")
 print("Answer is:", soln)
