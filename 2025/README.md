@@ -1,7 +1,9 @@
 # 2025
 ## Highlights
 
-Day:
+Day 4:
+
+![Clearing the warehouse of paper rolls](2025/day04/day04.gif)
 
 ### Comments
 
@@ -11,6 +13,8 @@ Day:
 2. Should have used regex, but did it manually.
 3. Serial battery linkages for max jolts. Combinatorials?
 4. Looking at neighbourhoods, a surface
+ - To make the animated gif:
+    convert -delay 0.2 -loop 0 *.png day04.gif
 
 ### Tags
 

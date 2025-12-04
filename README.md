@@ -6,8 +6,13 @@ My [Advent of Code](https://adventofcode.com/) solutions
 [2022](/2022)
 [2023](/2023)
 [2024](/2024)
+[2025](/2025)
 
 ## Highlights
+### 2025
+![Clearing the warehouse of paper rolls](2025/day04/day04.gif)
+### 2023
+![Follow the pipe](2023/day10/day10.gif)
 ### 2021
 ![Possible probe trajectories for target area](2021/day17/probe_paths.png "Possible probe trajectories for target area")
 
