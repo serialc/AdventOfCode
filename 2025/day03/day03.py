@@ -1,4 +1,4 @@
-"""AoC 2024 - Day 1."""
+"""AoC 2024 - Day 3."""
 
 input_file = "input0"
 input_file = "input"

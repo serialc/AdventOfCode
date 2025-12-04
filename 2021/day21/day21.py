@@ -1,18 +1,20 @@
 import numpy as np
 
 # inputs
-spos = [4,8]
-spos = [7,10]
+spos = [4, 8]
+spos = [7, 10]
 
-###### Part 1 #######
+# Part 1 #######
 pos = spos.copy()
-sc = [0,0]
+sc = [0, 0]
 rpt = 3
 rollcount = 0
 pturn = 0
 
 die = 1
 rollcount = 0
+
+
 def rollD100():
     global die
     global rollcount
@@ -26,19 +28,20 @@ def rollD100():
 
     return rval
 
+
 while True:
-    #print("Player", pturn + 1, end="")
+    # print("Player", pturn + 1, end="")
     roll = rollD100() + rollD100() + rollD100()
-    #print(" Rolled", roll, end="")
+    # print(" Rolled", roll, end="")
     pos[pturn] = pos[pturn] + roll
     pos[pturn] %= 10
-    #print(" New pos", pos[pturn], end="")
+    # print(" New pos", pos[pturn], end="")
     if pos[pturn] == 0:
         sc[pturn] += 10
     else:
         sc[pturn] += pos[pturn]
-    #print(" and score:", sc[pturn])
-    
+    # print(" and score:", sc[pturn])
+
     # determine next player - alternate
     if pturn == 0:
         pturn = 1
@@ -70,19 +73,20 @@ pos = spos.copy()
 # 3,4,5,6,7,8,9
 # 1,3,6,7,6,3,1 <- distributions
 
-roll = np.array([3,4,5,6,7,8,9], dtype=int)
-dist = np.array([1,3,6,7,6,3,1], dtype=int)
+roll = np.array([3, 4, 5, 6, 7, 8, 9], dtype=int)
+dist = np.array([1, 3, 6, 7, 6, 3, 1], dtype=int)
+
 
 def playTurn(state, games_played, scores, player):
 
     global game_wins
 
-    #print("state", state, "scores", scores)
+    # print("state", state, "scores", scores)
 
     # for each possible roll calculate the updated scores
-    #print(roll)
+    # print(roll)
     for i in range(len(roll)):
-        #print(i,"Three roll sum", roll[i], "frequency", dist[i])
+        # print(i,"Three roll sum", roll[i], "frequency", dist[i])
         new_state = state.copy()
         new_scores = scores.copy()
 
@@ -95,14 +99,14 @@ def playTurn(state, games_played, scores, player):
 
         # get the updated score for this set of games
         if new_state[player] == 0:
-            new_scores[player] += + 10
+            new_scores[player] += +10
         else:
             new_scores[player] += new_state[player]
 
         # determine if this player has won
         if new_scores[player] > 20:
             game_wins[player] += played_games
-            #print("Player", player, "won", played_games)
+            # print("Player", player, "won", played_games)
             # continue to next game
             continue
 
@@ -114,13 +118,11 @@ def playTurn(state, games_played, scores, player):
         # (state, played_games, scores, next_player)
         playTurn(new_state.copy(), played_games, new_scores.copy(), next_player)
 
-game_wins = [0,0]
+
+game_wins = [0, 0]
 
 # playTurn(state, played_games, scores, next_player)
-playTurn(pos, 1, [0,0], 0)
+playTurn(pos, 1, [0, 0], 0)
 
 print("How many wins does the player with the most wins have?")
 print(game_wins)
-
-
-
