@@ -3,7 +3,7 @@
 
 Day 4:
 
-![Clearing the warehouse of paper rolls](2025/day04/day04.gif)
+![Clearing the warehouse of paper rolls](day04/day04.gif)
 
 ### Comments
 
