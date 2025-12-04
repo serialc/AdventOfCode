@@ -14,6 +14,7 @@ Day:
 3. Serial battery linkages for max jolts. Combinatorials?
 4. Looking at neighbourhoods, a surface
  - To make the animated gif:
+
     convert -delay 0.2 -loop 0 *.png day04.gif
 
 ### Tags
