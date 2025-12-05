@@ -9,13 +9,12 @@ Day 4:
 
 Day:
 
-1. Safe dial null position counts.
+1. Safe-dial null position counts.
 2. Should have used regex, but did it manually.
 3. Serial battery linkages for max jolts. Combinatorials?
-4. Looking at neighbourhoods, a surface
- - To make the animated gif:
-
-    convert -delay 0.2 -loop 0 *.png day04.gif
+4. Looking at neighbourhoods on a surface
+ - To make the animated gif `convert -delay 0.2 -loop 0 *.png day04.gif`
+5. Counting overlapping set contents.
 
 ### Tags
 
@@ -25,3 +24,4 @@ Day:
 2. regex, 
 3. recursion
 4. grid neighbourhood, surface
+3. sets, dictionary, limits, overlapping
