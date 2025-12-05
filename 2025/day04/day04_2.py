@@ -28,15 +28,15 @@ def matWrap(mat, width=1, value=""):
     h, w = mat.shape
 
     if mat.dtype == "U1":
-        nmat = np.full(np.array(mat.shape) + 2, value)
+        nmat = np.full(np.array(mat.shape) + 2 * width, value)
 
     if mat.dtype == "float64" or mat.dtype == "int64":
         if value == "":
             value = 0
-        nmat = np.full(np.array(mat.shape) + 2, value, dtype=mat.dtype)
+        nmat = np.full(np.array(mat.shape) + 2 * width, value, dtype=mat.dtype)
 
     # copy mat contents to new matrix
-    nmat[1 : mat.shape[0] + 1, 1 : mat.shape[1] + 1] = mat
+    nmat[width : mat.shape[0] + width, width : mat.shape[1] + width] = mat
 
     return nmat
 
