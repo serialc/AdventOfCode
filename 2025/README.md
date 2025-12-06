@@ -15,6 +15,7 @@ Day:
 4. Looking at neighbourhoods on a surface
  - To make the animated gif `convert -delay 0.2 -loop 0 *.png day04.gif`
 5. Counting overlapping set contents.
+6. Working with numbers in tabular format rather than as expected.
 
 ### Tags
 
@@ -24,4 +25,12 @@ Day:
 2. regex, 
 3. recursion
 4. grid neighbourhood, surface
-3. sets, dictionary, limits, overlapping
+5. sets, dictionary, limits, overlapping
+6. numpy, table, manual number assembly
+
+### Errors that cost time
+
+- Used a raw value rather than the modulo/remainder (Day 1)
+- I used an equality by accident when I wanted to do an assignment (Day 4)
+- I used a dict but overwrote values, lost duplicates that I needed (Day 5)
+- Assumptions about regular column spacing were not checked (Day 6)

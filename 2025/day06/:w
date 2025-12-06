@@ -1,0 +1,98 @@
+"""AoC 2025 Day 06."""
+
+import numpy as np
+from PIL import Image
+
+# import sys
+# import time
+# import re
+
+
+def matPrint(mat, cwidth=1, replace=0, replacement="."):
+    """Print a matrix nicely."""
+    nh, nw = mat.shape
+    print("Dimension", nh, nw)
+
+    for y in range(nh):
+        for x in range(nw):
+            vlen = len(str(mat[y, x]))
+            if mat[y, x] == replace:
+                print(replacement + " " * (cwidth - len(replacement)), end="")
+            else:
+                print(str(mat[y, x]) + " " * (cwidth - vlen), end="")
+        print()
+
+
+input_file = "input0"
+# input_file = "input"
+
+raw = []
+with open(input_file, "r") as fh:
+    for line in fh:
+        line = line.strip("\n")
+
+        if line == "":
+            continue
+
+        raw.append(list(line))
+
+# convert to numpy array
+math = np.array(raw_surf)
+
+msum = 0
+for i in range(math.shape[0]):
+    print(math[:,i])
+
+
+print("#### Part 1 ####")
+print("Answer is:", msum)
+quit()
+
+# PART 2 ####
+print("============ Part 2 start ================")
+
+# img size multiplier
+resmult = 2
+pid = 1
+
+removed = 0
+while True:
+    im = Image.new("RGB", (surf.shape[0] * resmult, surf.shape[1] * resmult))
+    # make image frame
+    pixellist = []
+    for y in range(surf.shape[0]):
+        for mult in range(resmult):
+            for x in range(surf.shape[1]):
+                for mult in range(resmult):
+                    if surf[y, x] == "#":
+                        pixellist.append((0, 0, 0))
+                    if surf[y, x] == ".":
+                        pixellist.append((100, 100, 100))
+                    if surf[y, x] == "@":
+                        pixellist.append((255, 255, 255))
+    im.putdata(pixellist)
+    im.save("img_" + "0" * (3 - len(str(pid))) + str(pid) + ".png")
+    pid += 1
+
+    accessible = 0
+    rlocs = np.where(surf == "@")
+    # matPrint(surf)
+    for i in range(len(rlocs[0])):
+        x = rlocs[1][i]
+        y = rlocs[0][i]
+
+        # matPrint(surf[t : b + 1, l : r + 1], replace="")
+        if np.sum(surf[(y - 1) : (y + 2), (x - 1) : (x + 2)] == "@") <= 4:
+            accessible += 1
+            # remove it
+            surf[y, x] = "."
+            removed += 1
+
+    # matPrint(surf)
+    print(accessible, removed)
+    if accessible == 0:
+        break
+
+matPrint(surf)
+print("#### Part 2 ####")
+print("Answer is:", removed)
