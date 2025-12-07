@@ -6,7 +6,8 @@ Day 4:
 ![Clearing the warehouse of paper rolls](day04/day04.gif)
 
 Day 7:
-![Flow of light](day07/pixel_density.png)
+
+<img src="day07/pixel_density.png" title="Flow of light">
 
 ### Comments
 

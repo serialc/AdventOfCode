@@ -12,7 +12,7 @@ My [Advent of Code](https://adventofcode.com/) solutions
 ### 2025
 ![Clearing the warehouse of paper rolls](2025/day04/day04.gif)
 
-![Flow of light](2025/day07/pixel_density.png)
+<img src="2025/day07/pixel_density.png" title="Flow of light">
 
 ### 2023
 ![Follow the pipe](2023/day10/day10.gif)
