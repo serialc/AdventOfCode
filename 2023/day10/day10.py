@@ -33,7 +33,7 @@ def makeFrame(mat):
                     pixellist.append(col)
 
     im.putdata(pixellist)
-    im.save("imgs/img_" + "0" * (3 - len(str(pid))) + str(pid) + ".png")
+    im.save("imgs/img_" + "0" * (4 - len(str(pid))) + str(pid) + ".png")
     pid += 1
 
 
@@ -79,7 +79,7 @@ smap = np.zeros([len(pmap), len(pmap[0])], dtype=int)
 def route(y, x, d, scorch=False):
     smap[y, x] = d
 
-    if d % 50 == 0:
+    if d % 25 == 0:
         if scorch:
             makeFrame(rmap)
         else:

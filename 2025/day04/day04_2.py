@@ -81,6 +81,21 @@ resmult = 2
 pid = 1
 
 removed = 0
+palhex = [
+    "d53e4f",
+    "f46d43",
+    "fdae61",
+    "fee08b",
+    "ffffbf",
+    "e6f598",
+    "abdda4",
+    "66c2a5",
+    "3288bd",
+]
+paldec = []  # type: ignore
+for ph in palhex:
+    paldec.append((int(ph[:2], 16), int(ph[2:4], 16), int(ph[4:], 16)))
+
 while True:
     im = Image.new("RGB", (surf.shape[0] * resmult, surf.shape[1] * resmult))
     # make image frame
@@ -92,10 +107,14 @@ while True:
                     if surf[y, x] == "#":
                         pixellist.append((0, 0, 0))
                     if surf[y, x] == ".":
-                        pixellist.append((100, 100, 100))
+                        pixellist.append((10, 10, 10))
                     if surf[y, x] == "@":
-                        pixellist.append((255, 255, 255))
-    im.putdata(pixellist)
+                        ncount = np.sum(
+                            surf[(y - 1) : (y + 2), (x - 1) : (x + 2)] == "@"
+                        )
+                        pixellist.append(paldec[ncount - 1])
+                        # pixellist.append((255, 255, 255))
+    im.putdata(pixellist)  # type: ignore
     im.save("img_" + "0" * (3 - len(str(pid))) + str(pid) + ".png")
     pid += 1
 

@@ -17,7 +17,6 @@ Day:
 2. Should have used regex, but did it manually.
 3. Serial battery linkages for max jolts. Combinatorials?
 4. Looking at neighbourhoods on a surface
- - To make the animated gif `convert -delay 0.2 -loop 0 *.png day04.gif`
 5. Counting overlapping set contents.
 6. Working with numbers in tabular format rather than as expected.
 7. The splitting of light down the surface.
@@ -34,7 +33,7 @@ Day:
 5. sets, dictionary, limits, overlapping
 6. numpy, table, manual number assembly
 7. numpy, surface, fractal sum
-8. numpy, 3D, pythagorus
+8. numpy, 3D, pythagorus, network
 
 ### Errors that cost time
 
