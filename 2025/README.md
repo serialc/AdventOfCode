@@ -21,6 +21,7 @@ Day:
 5. Counting overlapping set contents.
 6. Working with numbers in tabular format rather than as expected.
 7. The splitting of light down the surface.
+8. Creating shortest path network in 3D space
 
 ### Tags
 
@@ -33,6 +34,7 @@ Day:
 5. sets, dictionary, limits, overlapping
 6. numpy, table, manual number assembly
 7. numpy, surface, fractal sum
+8. numpy, 3D, pythagorus
 
 ### Errors that cost time
 
