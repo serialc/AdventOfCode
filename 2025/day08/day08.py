@@ -3,9 +3,9 @@
 import numpy as np
 import math
 import time
+import sys
 
 # from PIL import Image
-# import sys
 # import re
 
 
@@ -42,8 +42,11 @@ def matWrap(mat, width=1, value=""):
     return nmat
 
 
-input_file = "input0"
+# get input file from command line
 input_file = "input"
+if len(sys.argv) == 2:
+    input_file += sys.argv[1]
+print("\nProcessing input file:", input_file)
 
 nodes = []
 with open(input_file, "r") as fh:
@@ -53,6 +56,7 @@ with open(input_file, "r") as fh:
 
         nodes.append([int(x) for x in line.split(",")])
 
+print("There are", len(nodes), "nodes in this file")
 # print(nodes)
 # create distance matrix
 dmat = np.zeros((len(nodes), len(nodes)))
@@ -78,12 +82,13 @@ for xi in range(len(nodes)):
 dmat2 = dmat.copy()
 
 # Save the shortest connections
-connected = {}
+connected = {}  # type: ignore
 
 # make connections
-steps = 10
-if input_file == "input":
-    steps = 1000
+steps = 1000
+if input_file == "input0":
+    steps = 10
+print("Part one will connect", steps, "nodes")
 
 for step in range(steps):
 
@@ -125,7 +130,7 @@ for step in range(steps):
     # identify the number of groups
 
 # count occurances of each group
-consum = {}
+consum = {}  # type: ignore
 for g in connected.values():
     if g in consum:
         consum[g] += 1
@@ -141,11 +146,14 @@ print("#### Part 1 ####")
 print("Answer is:", math.prod(consumv[0:3]))
 # 777 - Too low - Was sorting ascending, needed to reverse sort
 
-# PART 2 ####
-print("============ Part 2 start ================")
+# PART 2 ###
+print("\n============ Part 2 start ================")
 
 # get the fresh matrix
 dmat = dmat2
+
+mloc = np.zeros(dmat.shape, dtype=int)
+dmats = np.zeros(dmat.shape)
 
 # Save the shortest connections
 connected = {}
@@ -185,6 +193,7 @@ while True:
 
     # save the x values in case this is the last node connected
     lastvalx = [nodes[lx][0], nodes[ly][0]]
+    dmats[ly, lx] = dmat[ly, lx]
 
     congroup = -1
     if lxs in connected:
@@ -205,9 +214,9 @@ while True:
         for key in connected:
             if connected[key] == old_congroup:
                 connected[key] = congroup
-
-    # add node ly to connection group
-    connected[lys] = congroup
+    else:
+        # add node ly to connection group
+        connected[lys] = congroup
 
     # speed optimization
     # for congroup populate matrix distances to infinity between nodes
@@ -225,6 +234,10 @@ while True:
 
     # make the distance large between the two nodes in the matrix
     dmat[ly, lx] = np.inf
+    mloc[ly, lx] = 1
+
+matPrint(mloc)
+matPrint(dmats)
 
 ftime = time.time() - stime
 print("Execution time is", ftime)
