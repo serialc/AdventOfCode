@@ -22,6 +22,8 @@ Day:
 7. The splitting of light down the surface.
 8. Creating shortest path network in 3D space
 9. Connecting nodes on plane - looking for largest rectangle
+10. Buttons increment one or more indices. Which buttons to press to reach target "joltage" profile.
+11. Follow paths through dictionary contiaining lists to other keys.
 
 ### Tags
 
@@ -36,6 +38,8 @@ Day:
 7. numpy, surface, fractal sum
 8. numpy, 3D, pythagorus, network
 9. numpy, position ranking, surface
+10. recursion
+11. memoization, dictionary, recursion
 
 ### Errors that cost time
 
@@ -45,3 +49,5 @@ Day:
 - Assumptions about regular column spacing were not checked (Day 6)
 - Writing multi-digit numbers to a character matrix is bad, "10" becomes "1" (Day 7)
 - Operating on a very large surface wasn't possible. There were large gaps. Converted postions to ranked positions as suggested on Reddit. (Day 9)
+- Unable to reach solution efficiently, needed to come up with a completely new solution (Day 10)
+- Placed state change of wider scope variable in a loop, wrongly impacting following iterations (Day 11).
