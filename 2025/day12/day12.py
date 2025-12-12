@@ -90,8 +90,10 @@ with open(input_file, "r") as fh:
 
 def giftSqueeze(tasks, surf, depth=0):
     """Make magic."""
+    global die
+
     # print("\ngiftSqueeze!")
-    print(tasks, " " * depth, depth)
+    # print(tasks, " " * depth, depth)
     # matPrint(surf)
 
     if sum(tasks) == 0:
@@ -146,8 +148,10 @@ def giftSqueeze(tasks, surf, depth=0):
 
                 for y in range(ylim):
                     for x in range(xlim):
-                        # fit it in each configuration
+                        if die:
+                            return False
 
+                        # fit it in each configuration
                         if np.all(surf[y : y + sh, x : x + sw] + tshape < 2):
 
                             csurf = surf.copy()
@@ -161,35 +165,61 @@ def giftSqueeze(tasks, surf, depth=0):
                             if giftSqueeze(ctasks, csurf, depth + 1):
                                 return True
     # didn't succeed
+    die = True
     return False
 
 
 # LOOK AT THE AREA versus INPUT AREAS --- obvious?
-count = 0
+proportions = []
 for sp in spaces:
     space = np.zeros((sp[1], sp[0]), dtype=np.uint8)
     tasks = np.array(sp[2])
-    fill = np.sum(
-        [np.sum(shape_dict[i]) * tasks[i] for i in range(len(tasks))]
-    ) / np.prod(space.shape)
-    if fill < 1:
-        count += 1
-print(count)
-quit()
+    gift_areas = [np.sum(shape_dict[i]) * tasks[i] for i in range(len(tasks))]
+    fill = np.sum(gift_areas) / np.prod(space.shape)
+
+    proportions.append(round(fill, 3))
+# print(proportions)
+print("Quick answer is:", sum(np.array(proportions) < 1))
 
 if input_file == "input":
     # create new shapes that are compact combinations of given shapes
-    shape_dict[10] = np.zeros((4, 3), dtype=np.uint8)
-    shape_dict[10][0:3, 0:3] += shape_dict[0]
-    shape_dict[10][1:4, 0:3] += np.rot90(shape_dict[0], 2)
-    shape_dict[11] = np.zeros((4, 3), dtype=np.uint8)
+    shape_dict[6] = np.zeros((4, 4), dtype=np.uint8)
+    shape_dict[6][0:3, 0:3] += shape_dict[0]
+    shape_dict[6][1:4, 0:3] += np.rot90(shape_dict[0], 2)
 
-# NEED TO REPLACE OCCURANCES OF UNMERGED WITH MERGED?
+    shape_dict[7] = np.zeros((4, 4), dtype=np.uint8)
+    shape_dict[7][0:3, 0:3] += np.rot90(shape_dict[3], 2)
+    shape_dict[7][1:4, 1:4] += shape_dict[3]
+
+    shape_dict[8] = np.zeros((4, 4), dtype=np.uint8)
+    shape_dict[8][0:3, 0:3] += shape_dict[4]
+    shape_dict[8][1:4, 0:3] += np.rot90(shape_dict[4], 2)
+
+    shape_dict[9] = np.zeros((5, 5), dtype=np.uint8)
+    shape_dict[9][0:3, 0:3] += np.rot90(shape_dict[5], 2)
+    shape_dict[9][2:5, 0:3] += shape_dict[5]
+
+# for each tree area replace individual occurances with the joined
+for spi in range(len(spaces)):
+    # replace '0' occurances with half the number of '6'
+    spaces[spi][2].append(int(spaces[spi][2][0] / 2))
+    spaces[spi][2][0] %= 2
+
+    # replace '3' occurances with half the number of '7'
+    spaces[spi][2].append(int(spaces[spi][2][3] / 2))
+    spaces[spi][2][3] %= 2
+
+    # replace '4' occurances with half the number of '8'
+    spaces[spi][2].append(int(spaces[spi][2][4] / 2))
+    spaces[spi][2][4] %= 2
+
+    # replace '5' occurances with half the number of '9'
+    spaces[spi][2].append(int(spaces[spi][2][5] / 2))
+    spaces[spi][2][5] %= 2
 
 # characterize each shape
 shape_perms = []
 for shid in shape_dict:
-
     sh = shape_dict[shid]
     perms = {"t": 2, "r": 4}
 
@@ -199,7 +229,7 @@ for shid in shape_dict:
         perms["r"] = 2
 
     # shape doesn't need to be flipped, only rotated
-    if sh.shape[0] == sh.shape[1] and (
+    if (
         (sh == sh.T).all()
         or (np.rot90(sh.T, 2) == sh).all()
         or (sh == np.fliplr(sh)).all()
@@ -209,14 +239,13 @@ for shid in shape_dict:
 
     shape_perms.append(perms)
 
-    print("\nShape", shid)
-    matPrint(sh)
-
-quit()
+    # print("\nShape", shid)
+    # matPrint(sh)
 
 # now allocate required shapes in spaces
 total_gifts = 0
 for sp in spaces:
+    die = False
     print("Task", sp, end=" ")
     space = np.zeros((sp[1], sp[0]), dtype=np.uint8)
     tasks = np.array(sp[2])
@@ -228,15 +257,5 @@ for sp in spaces:
         print("Failed!", end="")
     print("", time.time() - stime)
 
-    if total_gifts == 2:
-        break
-
 print("#### Part 1 ####")
 print("Answer is:", total_gifts)
-
-# PART 2 ###
-print("\n============ Part 2 start ================")
-
-
-print("#### Part 2 ####")
-print("Answer is:", -99)
