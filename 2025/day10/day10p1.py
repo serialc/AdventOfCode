@@ -17,36 +17,31 @@ if len(sys.argv) == 2:
 print("\nProcessing input file:", input_file)
 
 
-def rsearch(goal, state, bset, pressedset):
+def rsearch(goal, state, depth, bset, pressedset):
     """Return button presses that turn on correct pattern."""
     if state == goal:
         return len(pressedset)
 
-    # we've pressed each button once - failed
-    if len(pressedset) == len(bset):
-        return False
+    # we've pressed each button once - and not gotten the answer -> failed
+    if depth == len(bset):
+        return np.inf
 
-    # do each button press combo
-    lowest = np.inf
+    # can only press each button a maximum of one time
+    bs = bset[depth]
 
-    # line below is key! only search a subset as we go deeper into recursion!
-    for bs in bset[len(pressedset) :]:
+    # don't press this button
+    score1 = rsearch(goal, state.copy(), depth + 1, bset, pressedset)
 
-        # !! can only press each button a maximum of one time
-        if bs in pressedset:
-            continue
+    # do press this button
+    tstate = state.copy()
+    # combos have 1 or more buttons
+    for b in bs:
+        tstate[b] ^= 1
+    score2 = rsearch(goal, tstate, depth + 1, bset, pressedset + [depth])
 
-        tstate = state.copy()
-        # combos have 1 or more buttons
-        for b in bs:
-            tstate[b] ^= 1
-
-        score = rsearch(goal, tstate, bset, pressedset + [bs])
-
-        if score is not False and score < lowest:
-            lowest = score
-
-    return lowest
+    if score1 < score2:
+        return score1
+    return score2
 
 
 results = []
@@ -66,7 +61,7 @@ with open(input_file, "r") as fh:
         # print("Button connections", bcombs)
 
         # send goal, off state, btn connections, btn presses
-        res = rsearch(lights, [0] * len(lights), bcombs, [])
+        res = rsearch(lights, [0] * len(lights), 0, bcombs, [])
         results.append(res)
         # print("Button presses", res)
 
