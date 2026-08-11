@@ -5,17 +5,31 @@ Day 4:
 
 ![Clearing the warehouse of paper rolls](day04/day04.gif)
 
+Day 7:
+
+<img src="day07/pixel_density.png" title="Flow of light">
+
 ### Comments
 
 Day:
 
-1. Safe dial null position counts.
+1. Safe-dial null position counts.
 2. Should have used regex, but did it manually.
 3. Serial battery linkages for max jolts. Combinatorials?
 4. Looking at neighbourhoods to remove items from a surface.
  - To generate the animated gif:
 
     `convert -delay 0.2 -loop 0 *.png day04.gif`
+=======
+4. Looking at neighbourhoods on a surface
+5. Counting overlapping set contents.
+6. Working with numbers in tabular format rather than as expected.
+7. The splitting of light down the surface.
+8. Creating shortest path network in 3D space
+9. Connecting nodes on plane - looking for largest rectangle
+10. Buttons increment one or more indices. Which buttons to press to reach target "joltage" profile.
+11. Follow paths through dictionary contiaining lists to other keys.
+12. It's a trick, sort of.
 
 ### Tags
 
@@ -25,3 +39,23 @@ Day:
 2. regex, 
 3. recursion
 4. grid neighbourhood, surface
+5. sets, dictionary, limits, overlapping
+6. numpy, table, manual number assembly
+7. numpy, surface, fractal sum
+8. numpy, 3D, pythagorus, network
+9. numpy, position ranking, surface
+10. recursion
+11. memoization, dictionary, recursion
+12. numpy, matrices
+
+### Errors that cost time
+
+- Used a raw value rather than the modulo/remainder (Day 1)
+- I used an equality by accident when I wanted to do an assignment (Day 4)
+- I used a dict but overwrote values, lost duplicates that I needed (Day 5)
+- Assumptions about regular column spacing were not checked (Day 6)
+- Writing multi-digit numbers to a character matrix is bad, "10" becomes "1" (Day 7)
+- Operating on a very large surface wasn't possible. There were large gaps. Converted positions to ranked positions as suggested on Reddit. (Day 9)
+- Unable to reach solution efficiently, needed to come up with a completely new solution (Day 10)
+- Placed state change of wider scope variable in a loop, wrongly impacting following iterations (Day 11).
+- Tried to solve an impossible problem, rather than see that there was an easy solution by looking at the distribution of tasks. Some were clearly impossible, and most others trivial. Tasks had a two-peak distribution.

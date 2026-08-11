@@ -1,4 +1,4 @@
-"""AoC 2025 Day 04."""
+"""AoC 2025 Day 06."""
 
 import numpy as np
 from PIL import Image
@@ -23,28 +23,10 @@ def matPrint(mat, cwidth=1, replace=0, replacement="."):
         print()
 
 
-def matWrap(mat, width=1, value=""):
-    """Add a border of values around a matrix."""
-    h, w = mat.shape
-
-    if mat.dtype == "U1":
-        nmat = np.full(np.array(mat.shape) + 2 * width, value)
-
-    if mat.dtype == "float64" or mat.dtype == "int64":
-        if value == "":
-            value = 0
-        nmat = np.full(np.array(mat.shape) + 2 * width, value, dtype=mat.dtype)
-
-    # copy mat contents to new matrix
-    nmat[width : mat.shape[0] + width, width : mat.shape[1] + width] = mat
-
-    return nmat
-
-
 input_file = "input0"
-input_file = "input"
+# input_file = "input"
 
-raw_surf = []
+raw = []
 with open(input_file, "r") as fh:
     for line in fh:
         line = line.strip("\n")
@@ -52,26 +34,19 @@ with open(input_file, "r") as fh:
         if line == "":
             continue
 
-        raw_surf.append(list(line))
+        raw.append(list(line))
 
 # convert to numpy array
-surf = np.array(raw_surf)
-# add border to make neighbourhood work on the edges more easily
-surf = matWrap(surf, value="#")
-# find the locations of all the rolls of paper
-rlocs = np.where(surf == "@")
+math = np.array(raw_surf)
 
-accessible = 0
-for i in range(len(rlocs[0])):
-    x = rlocs[1][i]
-    y = rlocs[0][i]
+msum = 0
+for i in range(math.shape[0]):
+    print(math[:,i])
 
-    if np.sum(surf[(y - 1) : (y + 2), (x - 1) : (x + 2)] == "@") <= 4:
-        accessible += 1
 
 print("#### Part 1 ####")
-print("Answer is:", accessible)
-
+print("Answer is:", msum)
+quit()
 
 # PART 2 ####
 print("============ Part 2 start ================")
@@ -81,21 +56,6 @@ resmult = 2
 pid = 1
 
 removed = 0
-palhex = [
-    "d53e4f",
-    "f46d43",
-    "fdae61",
-    "fee08b",
-    "ffffbf",
-    "e6f598",
-    "abdda4",
-    "66c2a5",
-    "3288bd",
-]
-paldec = []  # type: ignore
-for ph in palhex:
-    paldec.append((int(ph[:2], 16), int(ph[2:4], 16), int(ph[4:], 16)))
-
 while True:
     im = Image.new("RGB", (surf.shape[0] * resmult, surf.shape[1] * resmult))
     # make image frame
@@ -107,14 +67,10 @@ while True:
                     if surf[y, x] == "#":
                         pixellist.append((0, 0, 0))
                     if surf[y, x] == ".":
-                        pixellist.append((10, 10, 10))
+                        pixellist.append((100, 100, 100))
                     if surf[y, x] == "@":
-                        ncount = np.sum(
-                            surf[(y - 1) : (y + 2), (x - 1) : (x + 2)] == "@"
-                        )
-                        pixellist.append(paldec[ncount - 1])
-                        # pixellist.append((255, 255, 255))
-    im.putdata(pixellist)  # type: ignore
+                        pixellist.append((255, 255, 255))
+    im.putdata(pixellist)
     im.save("img_" + "0" * (3 - len(str(pid))) + str(pid) + ".png")
     pid += 1
 
