@@ -9,6 +9,32 @@ My [Advent of Code](https://adventofcode.com/) solutions
 [2025](/2025)
 
 ## Highlights
+
+### 2015
+
+Using virtual environment and package now:
+
+Create the VE:
+
+    python -m venv venv
+
+Activate VE: 
+
+    . venv/bin/activate
+
+Install local project:
+
+    pip install -e . (path to package to install)
+
+I will likely need install other dependencies that are not present in VE:
+
+    pip install numpy
+
+Deactivate VE:
+
+    deactivate
+
+
 ### 2025
 ![Clearing the warehouse of paper rolls](2025/day04/day04.gif)
 

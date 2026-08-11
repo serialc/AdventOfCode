@@ -1,0 +1,4 @@
+[project]
+name = "cmcaoc"
+version = "0.1.0"
+description = "A package to assist in Advent of Code puzzles"
