@@ -35,14 +35,15 @@ print("============ Part 2 start ================")
 
 # only has one line of data
 i = 0
-i = 3330000000
+# i = 3682000000
 while True:
     hashval = hashlib.md5((line + str(i)).encode("utf-8")).hexdigest()
-    if hashval[0:6] == "00000":
+    if hashval[0:6] == "000000":
+        print("Success!", i, hashval)
         break
 
-    if i % 1000000 == 0:
-        print(i, hashval)
+    if hashval[0:5] == "00000":
+        print("Close...", i, hashval)
 
     i += 1
 
