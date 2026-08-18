@@ -1,6 +1,6 @@
 """AoC 2015 - Day 10."""
 
-import re
+# import re
 
 # import numpy as np
 # import cmcaoc as cmc
