@@ -1,10 +1,9 @@
-"""AoC 2015 - Day 7."""
+"""AoC 2015 - Day 8."""
 
-import re
-
-import numpy as np
-import cmcaoc as cmc
-import functools  # for memoization
+# import re
+# import numpy as np
+# import cmcaoc as cmc
+# import functools  # for memoization
 
 
 def loadInput(input_file):

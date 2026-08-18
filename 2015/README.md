@@ -19,6 +19,9 @@ Day:
 4. hash function
 5. string patterns/matching, probably should have used regex
 6. regex, numpy, surface, list bound cutting
+7. memoization, recursion, wires
+8. arithmatic, encoding/decoding, devil in the details
+9. recursion
 
 ### Errors that cost time
 
