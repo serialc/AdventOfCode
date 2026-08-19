@@ -1,7 +1,9 @@
 # 2015 (done in August 2026)
 ## Highlights
 
-None yet
+
+![Santa's path](day03/day3_part1.png)
+![Santa's and bot's path](day03/day3_part2.png)
 
 ### Comments
 

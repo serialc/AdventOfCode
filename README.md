@@ -10,29 +10,11 @@ My [Advent of Code](https://adventofcode.com/) solutions
 
 ## Highlights
 
-### 2015
+### 2015 (in August 2026)
 
-Using virtual environment and package now:
+![Santa's path](2015/day03/day3_part1.png)
 
-Create the VE:
-
-    python -m venv venv
-
-Activate VE: 
-
-    . venv/bin/activate
-
-Install local project:
-
-    pip install -e . (path to package to install)
-
-I will likely need install other dependencies that are not present in VE:
-
-    pip install numpy
-
-Deactivate VE:
-
-    deactivate
+![Santa's and bot's path](2015/day03/day3_part2.png)
 
 
 ### 2025
@@ -76,3 +58,27 @@ Starting a new year?
 Create all the directories for each day with:
 
     mkdir day{01..25}
+
+### Using VE
+
+Using virtual environment and package now:
+
+Create the VE:
+
+    python -m venv venv
+
+Activate VE: 
+
+    . venv/bin/activate
+
+Install local and active project:
+
+    pip install -e . (path to package to install)
+
+I will likely need install other dependencies that are not present in VE:
+
+    pip install numpy
+
+Deactivate VE:
+
+    deactivate
