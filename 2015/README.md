@@ -4,8 +4,7 @@
 ![Santa's path](day03/day3_part1.png)
 ![Santa's and bot's path](day03/day3_part2.png)
 
-<img src="day06/day6_part1.png" title="Light show toggle" width="300">
-<img src="day06/day6_part2.png" title="Light show brightness" width="300">
+<img src="day06/day6_part1.png" title="Light show toggle" width="300"> <img src="day06/day6_part2.png" title="Light show brightness" width="300">
 
 ### Comments
 
