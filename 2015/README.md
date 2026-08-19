@@ -27,6 +27,8 @@ Day:
 11. password odometer, character manipulation
 12. json, recursion, parsing, types
 13. recursion, bidirectional relations, round table
+14. modulo, scoring, race
+15. calories, equation, compromise
 
 ### Errors that cost time
 
