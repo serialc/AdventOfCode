@@ -29,6 +29,7 @@ Day:
 13. recursion, bidirectional relations, round table
 14. modulo, scoring, race
 15. calories, equation, compromise
+16. contents matching
 
 ### Errors that cost time
 
