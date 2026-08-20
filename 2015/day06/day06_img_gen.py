@@ -134,6 +134,7 @@ def getLightsSum():
 
 
 with open(input_file, "r") as fh:
+    i = 0
     for line in fh:
         line = line.strip("\n")
 
@@ -179,16 +180,26 @@ with open(input_file, "r") as fh:
             ls[b : (t + 1), l : (r + 1)] = 1
         # cmc.matPrint(ls)
 
+        # to generate gif
+        pix_h_w = cmc.makePixelListHw(ls)
+        ilen = (4 - len(str(i))) * "0" + str(i)
+        cmc.makeRgbImage(
+            pix_h_w["pixlist"], "gif/frame_" + ilen, pix_h_w["h"], pix_h_w["w"]
+        )
+
         if ls.sum() != getLightsSum():
             print("Matrix sum:", ls.sum())
             print("List sum:", getLightsSum())
             exit("Error - inconsistent light sum")
 
+        i += 1
+
 pix_h_w = cmc.makePixelListHw(ls)
 cmc.makeRgbImage(pix_h_w["pixlist"], "day6_part1", pix_h_w["h"], pix_h_w["w"])
 
 print("#### Part 1 ####")
-print("Answer is:", getLightsSum(), ls.sum())
+# print("Answer is:", getLightsSum(), ls.sum())
+print("Answer is:", ls.sum())
 # 438822 - Too high: Updated action label from "on" to "turn on" and forgot
 #        - Also, for "turn off" was checking wrong index!
 
