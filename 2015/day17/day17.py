@@ -1,7 +1,6 @@
 """AoC 2015 - Day 17."""
 
-import re
-
+# import re
 # import json
 # import numpy as np
 # import cmcaoc as cmc
@@ -47,31 +46,21 @@ def fill(data, vol, cont=[], depth=0):
 
 
 def minFill(data, vol, cont=[], depth=0):
-    """Return the number of permutations that can contain a specific volume."""
-    # Recursion end
+    """Return the number of container permutations that can contain a specific volume."""
+    # Recursion end, return a list
     if sum(cont) == vol:
-        return len(cont)
+        return [len(cont)]
     if sum(cont) > vol:
-        return False
+        return []
     # failed to attain volume
     if depth >= len(data):
-        return False
+        return []
 
     # Recursion branching
     solutions = []
     # Use this container or don't
-    w_cont = minFill(data, vol, cont + [data[depth]], depth + 1)
-    wo_cont = minFill(data, vol, cont, depth + 1)
-
-    # merge to solutions list
-    if type(w_cont) is int:
-        solutions += [w_cont]
-    if type(w_cont) is list:
-        solutions += w_cont
-    if type(wo_cont) is int:
-        solutions += [wo_cont]
-    if type(wo_cont) is list:
-        solutions += wo_cont
+    solutions += minFill(data, vol, cont + [data[depth]], depth + 1)
+    solutions += minFill(data, vol, cont, depth + 1)
 
     return solutions
 
@@ -79,6 +68,9 @@ def minFill(data, vol, cont=[], depth=0):
 def tests(data, vol):
     """Run some tests."""
     assert fill(data, vol) == 4
+
+    reslist = minFill(data, vol)
+    assert reslist.count(min(reslist)) == 3
     print("All tests passed!")
 
 
