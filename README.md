@@ -18,6 +18,9 @@ My [Advent of Code](https://adventofcode.com/) solutions
 
 <img src="2015/day06/day6_anim.gif" title="Light show toggle" width="300"> <img src="2015/day06/day6_part2.png" title="Light show brightness" width="300">
 
+![Light show path](2015/day18/no_corners.gif)
+![Light show with corners on](2015/day18/corners.gif)
+
 ### 2025
 ![Clearing the warehouse of paper rolls](2025/day04/day04.gif)
 

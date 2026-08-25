@@ -6,11 +6,14 @@
 
 <img src="day06/day6_anim.gif" title="Light show toggle" width="300"> <img src="day06/day6_part2.png" title="Light show brightness" width="300">
 
+![Light show path](day18/no_corners.gif)
+![Light show with corners on](day18/corners.gif)
+
 ### Comments
 
 Day:
 
-6. Managed to do it the hard way so that I can solve it in 3D later (2021?).
+6. Managed to do it the hard way so that I can solve it in 3D later (2021).
    Integrated running tests into process.
 
 ### Tags
@@ -33,9 +36,12 @@ Day:
 14. modulo, scoring, race
 15. calories, equation, compromise
 16. contents matching
+17. combinations
+18. cellular automata, lights, neighbourhood
 
 ### Errors that cost time
 
 - Matching two strings of different lengths: line[0:6] == "00000"
 - Focusing on wrong section of problem due to large data set - use smaller tests!
 - Day: 13 - Used wrong list when retrieving indices. Took a while to find the problem
+- Day: 17 - When doing combinations, remember that we need to sometimes do nothing for a recursion.
