@@ -96,7 +96,7 @@ def destDistCalc(cave, y, x, surf, dist=0):
 
 
 def movableSpots(cave, loc):
-    """Return the movable destinations from loc and distance."""
+    """Return from loc the possible destinations and distances."""
     # if happily in own nest, return no movable spots
     if isNested(cave, loc):
         return []
@@ -111,8 +111,8 @@ def movableSpots(cave, loc):
 
     # foreign nests are never valid
     for sht, ncol in shnestcol.items():
-        # own nest, don't invalidate
-        if cave[loc] == sht:
+        # preserve own nest destinations, if in 'good standing'
+        if cave[loc] == sht and getNestSpot(cave, loc) is not False:
             continue
         valid_dest[2:, ncol] = 0
 
@@ -208,7 +208,7 @@ def getNestSpot(cave, loc):
 
 
 def movableShrimp(cave):
-    """Return a list of shrimp that can move."""
+    """Return a list of shrimp that can move, their destinations, and distance."""
     slist = shrimpLocs(cave)
 
     mshrimp = {}
@@ -230,28 +230,55 @@ def allShrimpsInTheirNests(cave):
     return True
 
 
+best_score = None
+max_depth = None
+
+
 def route(cave, espent=0, depth=0):
     """Recursively explore cave movement until solved."""
+    global best_score
+    global max_depth
+
+    # reset best_score
+    if depth == 0:
+        best_score = None
+        max_depth = depth
+
+    if depth > max_depth:
+        max_depth = depth
+
     # check if all shrimps are in their nests/home
     if allShrimpsInTheirNests(cave):
-        # print("All Shrimp are in their nests!")
+        # print("All Shrimp in nests! E=", espent, "D=", depth, "B=", best_score)
         # cmc.matPrint(cave)
-        # return espent if so
-        return [espent]
+        # print("\n\n")
+
+        # set/update best_score, if valid
+        if best_score is None or espent < best_score:
+            best_score = espent
+            print("All Shrimp in nests! New best E=", espent, "D=", depth)
+        return
+
+    # quit if current energy exceeds best score
+    if best_score is not None and espent > best_score:
+        # print("Return - Current energy (", espent, ") exceeds best score", best_score)
+        return
 
     # print("\nRecursion depth", depth)
     # cmc.matPrint(cave)
-    if depth > 16:
+    if depth > 32:
+        print("Depth", depth)
         print("Shouldn't need more than two moves per shrimp - something's wrong")
+        print("Cave situation when limit reached:")
+        cmc.matPrint(cave)
         exit("Depth exit")
 
     # get list of shrimp that can move
     ms = movableShrimp(cave)
 
+    # if nothing can move, no solution in this path
     if len(ms) == 0:
-        return []
-
-    elist = []
+        return
 
     # for each shrimp:
     # - determine state (happy in nest, out of nest, in bad nest)
@@ -263,11 +290,13 @@ def route(cave, espent=0, depth=0):
 
         # print("Looking at shrimp", stype, "at", sloc)
 
+        # SHRIMP ALREADY IN NEST
         # determine if shrimp is properly nested (not with other types)
         if isNested(cave, sloc):
-            # print("Shrimp", stype, "at", sloc, "has nested")
+            # print("Shrimp", stype, "at", sloc, "already nested")
             continue
 
+        # SHRIMP TO NEST
         # if shrimp can properly move to nest, do so
         nspot = getNestSpot(cave, sloc)
         if nspot is not False:
@@ -277,16 +306,18 @@ def route(cave, espent=0, depth=0):
             ncave[sloc] = "_"
             ncave[nspot["y"], nspot["x"]] = stype
             # increase energy spent
-            elist += route(ncave, espent + mnrg[stype] * nspot["d"], depth + 1)
-            continue
+            # print("--> COST:", mnrg[stype] * nspot["d"])
+            route(ncave, espent + mnrg[stype] * nspot["d"], depth + 1)
+            # continue
+            break
 
         # shrimp can now only either move out of foreign nest, or wait/do nothing
 
+        # SHRIMP MOVING TO HALLWAY
         # moving recursion
         # the shrimp tries all the possible destinations (outside of nests)
         # print("Moving shrimp possible destinations", ms[sloc])
         for dest in ms[sloc]:
-
             # if shrimp is outside a foreign nest and can't move to own nest
             # then do nothing
             if y == 1:
@@ -294,28 +325,32 @@ def route(cave, espent=0, depth=0):
 
             # shrimps are in a foreign nest (and can't move directly to own nest)
             # move to possible locations
-            # print("  Moving from", sloc, "to", dest)
+            # print("  Moving", stype, "from", sloc, "to", dest)
             ncave = np.copy(cave)
             # 'move' the shrimp
             ncave[sloc] = "_"
             ncave[dest["y"], dest["x"]] = stype
 
             # recursion
-            elist += route(ncave, espent + dest["d"] * mnrg[stype], depth + 1)
+            # print("--> COST:", mnrg[stype] * dest["d"])
+            route(ncave, espent + dest["d"] * mnrg[stype], depth + 1)
 
     if depth == 0:
-        print("Minimum found", min(elist))
-        return min(elist)
-
-    print("E-list at dept", depth, "holds:", elist)
-    if len(elist) > 0:
-        print("Min so far", min(elist))
-    return elist
+        print("Solution found!")
+        print("Max depth reached was", max_depth)
+        print("Best score found is", best_score)
+        return best_score
 
 
 def tests(data):
     """Run some tests."""
     assert route(data) == 12521
+    print("All tests passed!")
+
+
+def tests0(data):
+    """Run some tests."""
+    assert route(data) == 46
     print("All tests passed!")
 
 
@@ -334,11 +369,12 @@ def part2(data):
 
 
 if __name__ == "__main__":
+    data = loadInput("input1")
+    tests0(data)
     data = loadInput("input0")
     tests(data)
 
     data = loadInput("input")
     part1(data)
-
     data = loadInput("input2")
     part2(data)

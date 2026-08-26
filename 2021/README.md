@@ -35,6 +35,7 @@ Matrix folding of transparent sheet to produce the following:
 * Day 14: Required alternative thinking, flipping the task backwards. Building a dict of all possibilities back up. Then selecting the appropriate items. Also, I need to be more careful when using lists as they pass by reference and not value.
 * Day 16: Quite a nice recursive calculator. Too much reading to figure out the requirements.
 * Day 22: Solved in 2026.
+* Day 23: Solved in 2026.
 
 ## Tricky problems
 
@@ -43,7 +44,7 @@ Matrix folding of transparent sheet to produce the following:
 * Day 15: Careful, your path doesn't go only down and right.
 * Day 18: Tried to use recursion. That failed. Restarted but with a tree. Better but painful.
 * Day 22: Couldn't do it. In 2026, did 2015/day06, the same activity in 2D. Then solved this.
-* Day 23: 
+* Day 23: Managed. Lots of work and takes a long time to complete.
 
 ## Tags
 Concepts used or required to solve the challenges:
@@ -72,4 +73,4 @@ Day:
 20. matrices, filter, binary, cellular automata
 21. 
 22. 3D volumes, splitting
-23. movement of shrimp in cave
+23. movement of shrimp in cave, recursion
