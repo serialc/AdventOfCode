@@ -15,6 +15,7 @@ Day:
 
 6. Managed to do it the hard way so that I can solve it in 3D later (2021).
    Integrated running tests into process.
+19. Less fun. The concept is challenging but the data is nice so that the solution is actually trivial. Risk of overengineering.
 
 ### Tags
 
@@ -38,10 +39,11 @@ Day:
 16. contents matching
 17. combinations
 18. cellular automata, lights, neighbourhood
+19. string concatenations, permutations, recursion
 
 ### Errors that cost time
 
-- Matching two strings of different lengths: line[0:6] == "00000"
-- Focusing on wrong section of problem due to large data set - use smaller tests!
-- Day: 13 - Used wrong list when retrieving indices. Took a while to find the problem
-- Day: 17 - When doing combinations, remember that we need to sometimes do nothing for a recursion.
+- Day 04: Matching two strings of different lengths: line[0:6] == "00000"
+- Day 06: Focusing on wrong section of problem due to large data set - use smaller tests!
+- Day 13: Used wrong list when retrieving indices. Took a while to find the problem
+- Day 17: When doing combinations, remember that we need to sometimes do nothing for a recursion.

@@ -5,8 +5,8 @@ import numpy as np
 
 # movement energy requirements
 mnrg = {"A": 1, "B": 10, "C": 100, "D": 1000}
-#
-nests = dict()
+nests = dict()  # type: ignore
+shnestcol = {"A": 3, "B": 5, "C": 7, "D": 9}
 
 # INFO
 # '#' walls
@@ -48,49 +48,10 @@ def loadInput(input_file):
 
             cave.append(row)
     cave = np.array(cave)
+
+    print("Loaded cave system:")
     cmc.matPrint(cave)
     return cave
-
-
-def roomContents(room, cave):
-    """Return contents of room."""
-    # get the depth of the cave
-    caveh = cave.shape[0] - 1
-
-    if room == "A":
-        contents = cave[2:caveh, 3:4].tolist()
-    if room == "B":
-        contents = cave[2:caveh, 5:6].tolist()
-    if room == "C":
-        contents = cave[2:caveh, 7:8].tolist()
-    if room == "D":
-        contents = cave[2:caveh, 9:10].tolist()
-    return [x[0] for x in contents]
-
-
-def roomEmpty(room, cave):
-    """Return the status of a room."""
-    # get the depth of the cave
-    caveh = cave.shape[0] - 1
-
-    return roomContents(room, cave).count("_") == (caveh - 2)
-
-
-def roomState(room, cave):
-    """Return state of room."""
-    roomsize = cave.shape[0] - 3
-
-    # Can be 'dirty' or 'fill'
-    if roomEmpty(room, cave):
-        return "fill"
-
-    # check if present shrimp, if any, are exclusively of the room type
-    # and packed to the bottom (not currently doing this, may not be necessary)
-    roomcont = roomContents(room, cave)
-    if roomcont.count(room) + roomcont.count("_") == roomsize:
-        return "fill"
-
-    return "dirty"
 
 
 def shrimpLocs(cave):
@@ -111,8 +72,9 @@ def shrimpLocs(cave):
     return locs
 
 
-def distCalc(cave, y, x, surf, dist=0):
+def destDistCalc(cave, y, x, surf, dist=0):
     """Calculates distance matrix from location."""
+    # does not return as it modifies array passed by reference
 
     # print("Loc", y, x, "dist", dist)
     # set location distance
@@ -121,58 +83,128 @@ def distCalc(cave, y, x, surf, dist=0):
     # check neighbours, not visited and vacant/available
     # up
     if cave[y - 1, x] in ["_", "."] and surf[y - 1, x] == 0:
-        distCalc(cave, y - 1, x, surf, dist + 1)
+        destDistCalc(cave, y - 1, x, surf, dist + 1)
     # down
     if cave[y + 1, x] in ["_", "."] and surf[y + 1, x] == 0:
-        distCalc(cave, y + 1, x, surf, dist + 1)
+        destDistCalc(cave, y + 1, x, surf, dist + 1)
     # left
     if cave[y, x - 1] in ["_", "."] and surf[y, x - 1] == 0:
-        distCalc(cave, y, x - 1, surf, dist + 1)
+        destDistCalc(cave, y, x - 1, surf, dist + 1)
     # right
     if cave[y, x + 1] in ["_", "."] and surf[y, x + 1] == 0:
-        distCalc(cave, y, x + 1, surf, dist + 1)
-
-    # does not return as it modifies array passed by reference
+        destDistCalc(cave, y, x + 1, surf, dist + 1)
 
 
 def movableSpots(cave, loc):
-    """Return the movable locations, distance, outside of the nest."""
-    # print("movableSpots - Loc", loc)
-    # build matrix of valid spaces - two constraints
-    # - are empty '_', and
+    """Return the movable destinations from loc and distance."""
+    # if happily in own nest, return no movable spots
+    if isNested(cave, loc):
+        return []
+
+    # build matrix of valid/empty spaces
     valid_dest = (cave == "_") * 1
 
-    # - are on row 1
-    valid_dest[2:,] = 0
+    # which destinations are valid...
+    # - foreign nests are never valid
+    # - if in foreign nest: own nest and 'outside' are valid
+    # - if outside: only own nest is valid
 
-    # valid destinations above are incomplete (row 1)
-    # needs to be dependent on whether nest/home is returnable or not
-    # DO THIS
-    # DO THIS
-    # DO THIS
-    # DO THIS
-    # DO THIS
-    # DO THIS
+    # foreign nests are never valid
+    for sht, ncol in shnestcol.items():
+        # own nest, don't invalidate
+        if cave[loc] == sht:
+            continue
+        valid_dest[2:, ncol] = 0
 
-    # cmc.matPrint(valid_dest)
-    # now see which are reachable
+    # if shrimp is outside, only own nest destinations is valid
+    if loc[0] == 1:
+        valid_dest[1,] = 0
+
+    # which empty locations are reachable
     destdist = np.zeros(cave.shape, dtype=int)
-    distCalc(cave, *loc, destdist)
+    destDistCalc(cave, *loc, destdist)
 
     # package the valid destinations and their distance
     valid_destdist = valid_dest * destdist
     vy, vx = np.where(valid_destdist > 0)
+
     vdest = []
     for i in range(len(vy)):
         y, x = int(vy[i]), int(vx[i])
         vdest.append({"y": y, "x": x, "d": int(valid_destdist[y, x])})
-
     return vdest
 
 
-def nestSpot(cave, loc):
-    """Return the location and distance to the nest spot."""
+def getNestContents(cave, shtype):
+    """Return the contents of a nest."""
+    h, w = cave.shape
+    return cave[2 : (h - 1), shnestcol[shtype]]
+
+
+def isNested(cave, loc):
+    """Return whether the shrimp is in a clean nest and no longer needing to move."""
+    h, w = cave.shape
+    shtype = cave[loc]
+    y, x = loc
+
+    # if outside nests, False
+    if y == 1:
+        return False
+
+    # if in own nest, maybe nesting, if no other shrimp types are present
+    is_in_nest_col = x == shnestcol[shtype]
+    no_foreign_in_nest = np.all(
+        [sp in ["_", shtype] for sp in getNestContents(cave, shtype)]
+    )
+    if is_in_nest_col and no_foreign_in_nest:
+        return True
+    # don't worry about shrimp being in correct position
+    # - it will always to the deepest part of nest when moving in
+
     return False
+
+
+def getNestSpot(cave, loc):
+    """Return the location of the deepest nest spot."""
+    h, w = cave.shape
+    shtype = str(cave[loc])
+
+    # get the contents of this shrimp type's nest
+    nest_contents = getNestContents(cave, shtype)
+
+    # find the deepest spot
+    deepest = None
+    for i in range(len(nest_contents)):
+        # if other shrimp is in nest
+        if nest_contents[i] not in ["_", shtype]:
+            return False
+        # see how deep in nest we can get
+        if nest_contents[i] == "_":
+            deepest = i
+
+    # deepest is False here only if the nest is full
+    # we check for nest being full, this shouldn't happen
+    if deepest is False:
+        cmc.matPrint(cave)
+        exit("getNestSpot Error - This should never happen")
+
+    # target nest spot
+    ny = deepest + 2
+    nx = shnestcol[shtype]
+    # print("Deepest", deepest)
+
+    # calculate the distance from loc to nest position
+    dcave = np.zeros(cave.shape, dtype=int)
+    destDistCalc(cave, *loc, dcave)
+
+    # print(shtype, "nest destination", ny, nx)
+    ndist = dcave[ny, nx]
+    # check dist, if 0 then it is unreachable from loc
+    if ndist == 0:
+        return False
+
+    # return dest location with the added the offset and distance from loc
+    return {"y": ny, "x": nx, "d": int(ndist)}
 
 
 def movableShrimp(cave):
@@ -189,47 +221,96 @@ def movableShrimp(cave):
     return mshrimp
 
 
-def route(cave, espent=0):
+def allShrimpsInTheirNests(cave):
+    """Check if all shrimp are in their correct nest."""
+    for shtype in list("ABCD"):
+        ncon = getNestContents(cave, shtype)
+        if not np.all(ncon == shtype):
+            return False
+    return True
+
+
+def route(cave, espent=0, depth=0):
     """Recursively explore cave movement until solved."""
-
-    # clean_rooms = {"A": False, "B": False, "C": False, "D": False}
-
     # check if all shrimps are in their nests/home
-    # return espent if so
-    # DO THIS
-    # DO THIS
-    # DO THIS
-    # DO THIS
-    # DO THIS
-    # DO THIS
+    if allShrimpsInTheirNests(cave):
+        # print("All Shrimp are in their nests!")
+        # cmc.matPrint(cave)
+        # return espent if so
+        return [espent]
+
+    # print("\nRecursion depth", depth)
+    # cmc.matPrint(cave)
+    if depth > 16:
+        print("Shouldn't need more than two moves per shrimp - something's wrong")
+        exit("Depth exit")
 
     # get list of shrimp that can move
     ms = movableShrimp(cave)
 
-    # for each shrimp try moving to each location, or not moving (wait)
+    if len(ms) == 0:
+        return []
+
+    elist = []
+
+    # for each shrimp:
+    # - determine state (happy in nest, out of nest, in bad nest)
+    # - try moving to each destination, as needed
+    # - let others go first, wait
     for sloc in ms:
         stype = str(cave[sloc])
-        print(sloc)
+        y, x = sloc
+
+        # print("Looking at shrimp", stype, "at", sloc)
+
+        # determine if shrimp is properly nested (not with other types)
+        if isNested(cave, sloc):
+            # print("Shrimp", stype, "at", sloc, "has nested")
+            continue
+
+        # if shrimp can properly move to nest, do so
+        nspot = getNestSpot(cave, sloc)
+        if nspot is not False:
+            # move to nest
+            # print("Moved shrimp", stype, "to nest at", sloc)
+            ncave = np.copy(cave)
+            ncave[sloc] = "_"
+            ncave[nspot["y"], nspot["x"]] = stype
+            # increase energy spent
+            elist += route(ncave, espent + mnrg[stype] * nspot["d"], depth + 1)
+            continue
+
+        # shrimp can now only either move out of foreign nest, or wait/do nothing
 
         # moving recursion
+        # the shrimp tries all the possible destinations (outside of nests)
+        # print("Moving shrimp possible destinations", ms[sloc])
         for dest in ms[sloc]:
-            print("  ", sloc, dest)
+
+            # if shrimp is outside a foreign nest and can't move to own nest
+            # then do nothing
+            if y == 1:
+                break
+
+            # shrimps are in a foreign nest (and can't move directly to own nest)
+            # move to possible locations
+            # print("  Moving from", sloc, "to", dest)
             ncave = np.copy(cave)
             # 'move' the shrimp
             ncave[sloc] = "_"
             ncave[dest["y"], dest["x"]] = stype
+
             # recursion
-            route(ncave, espent + dest["d"] * mnrg[stype])
+            elist += route(ncave, espent + dest["d"] * mnrg[stype], depth + 1)
 
-        # not moving recursion
-        route(cave, espent)
+    if depth == 0:
+        print("Minimum found", min(elist))
+        return min(elist)
 
-    # does shrimp need to leave cave
-    # if shloc not in nests[shtype] or
-    # print("room empty:", roomEmpty(shtype, cave))
-    # print("room state:", roomState(shtype, cave))
-
-    return espent
+    print("E-list at dept", depth, "holds:", elist)
+    if len(elist) > 0:
+        print("Min so far", min(elist))
+    return elist
 
 
 def tests(data):
