@@ -65,11 +65,11 @@ def reverseMolecule(md, data, count=0):
     # --> Keys don't contain other keys.
     # Don't need to search entire space
 
-    # for each pattern
+    # for each molecule pattern
     for k, v in md.items():
-        # if it is inside string
-        if data.count(k) > 0:
-            # replace first instance with the shorter string
+        # if it is inside the data string
+        if k in data:
+            # replace first instance with the shorter, 'source',  string v
             ki = data.index(k)
             return reverseMolecule(md, data[:ki] + v + data[ki + len(k) :], count + 1)
 
