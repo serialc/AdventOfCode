@@ -40,6 +40,7 @@ Day:
 17. combinations
 18. cellular automata, lights, neighbourhood
 19. string concatenations, permutations, recursion
+20. permutations, factors, brute force
 
 ### Errors that cost time
 
