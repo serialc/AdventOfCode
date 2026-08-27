@@ -1,0 +1,92 @@
+"""AoC 2015 - Day 20."""
+
+import math
+
+# import re
+# import json
+# import numpy as np
+# import cmcaoc as cmc
+# import functools  # for memoization
+
+
+def getFactorPerm(factors):
+    fperm = []
+
+    if len(factors) == 1:
+        return factors
+
+    print("factors", factors)
+    fperm += [[factors[0]] + getFactorPerm(factors[1:])]
+    fperm += [getFactorPerm(factors[1:])]
+
+    # convert to factor
+    ffactors = []
+    for fset in fperm:
+        ffactors.append(math.prod(fset))
+    return ffactors
+
+
+def main(house):
+
+    print("====> Solve for", house)
+    # get factors of house number
+    factors = []
+    i = 1
+    while i < house:
+        i += 1
+        print(i)
+        if (house % i) == 0:
+            print("factor", i)
+            factors.append(i)
+            house = house / i
+            i = 1
+
+    print(factors)
+    fp = getFactorPerm(factors)
+    score = 10
+    fm = 1
+    for f in fp:
+        if fm is None:
+            fm = f
+        else:
+            fm *= f
+        score += fm * 10
+    print("Score", score)
+    return score
+
+
+def tests():
+    """Run some tests."""
+    assert main(2) == 30
+    assert main(3) == 40
+    assert main(4) == 70
+    assert main(5) == 60
+    assert main(6) == 120
+    assert main(7) == 80
+    assert main(8) == 150
+    assert main(9) == 130
+    print("All tests passed!")
+
+
+def part1(data):
+    """Solves and prints part1 answer."""
+    print("#### Part 1 ####")
+    answer = main(data)
+    print("Part 1 answer is:", answer)
+    # 450007030 - too high.
+
+
+def part2(data):
+    """Solves and prints part2 answer."""
+    print("#### Part 2 ####")
+    answer = main(data)
+    print("Part 2 answer is:", answer)
+
+
+if __name__ == "__main__":
+    # data = loadInput("input0")
+    tests()
+
+    # data = loadInput("input")
+    part1(36000000)
+    # part2()
