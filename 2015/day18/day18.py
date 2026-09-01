@@ -1,10 +1,10 @@
 """AoC 2015 - Day 18."""
 
-# import re
-# import json
 import numpy as np
 import cmcaoc as cmc
 
+# import re
+# import json
 # import functools  # for memoization
 
 

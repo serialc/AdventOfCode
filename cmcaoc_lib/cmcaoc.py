@@ -7,6 +7,43 @@ from PIL import Image
 # pip install pillow
 
 
+class tc:
+    """Provide colours for terminal printing."""
+
+    BLUE = "\033[94m"
+    CYAN = "\033[96m"
+    GREEN = "\033[92m"
+    ORANGE = "\033[93m"
+    RED = "\033[91m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+    ENDC = "\033[0m"
+    H_RED = "\033[41m"
+    H_GREEN = "\033[42m"
+    H_YELLOW = "\033[43m"
+    H_BLUE = "\033[44m"
+
+
+def ok(text, **kwargs):
+    print(tc.BLUE + text + tc.ENDC, **kwargs)
+
+
+def success(text, **kwargs):
+    print(tc.GREEN + text + tc.ENDC, **kwargs)
+
+
+def emphasis(text, **kwargs):
+    print(tc.CYAN + text + tc.ENDC, **kwargs)
+
+
+def warning(text, **kwargs):
+    print(tc.ORANGE + text + tc.ENDC, **kwargs)
+
+
+def fail(text, **kwargs):
+    print(tc.RED + text + tc.ENDC, **kwargs)
+
+
 def matPrint(mat, cwidth=1, replace=0, replacement="."):
     """Print a matrix nicely."""
     nh, nw = mat.shape
