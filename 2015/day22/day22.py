@@ -23,9 +23,9 @@ ends = {"wins": 0, "deaths": 0, "no_mana": 0}
 win_paths = []  # type: ignore
 
 
-def spellIsActive(hero, boss, spell):
+def spellIsActive(subjects, spell):
     """Determine if an effect spell is active for the hero or boss."""
-    for subject in [hero, boss]:
+    for subject in subjects:
         for effect in subject["effects"]:
             if effect["name"] == spell["name"]:
                 return True
@@ -70,36 +70,38 @@ def processEffect(target, effect_index):
     # Shield/armor spell
     if effect["name"] == "shield":
         if effect["dur"] == 0:
-            cmc.emphasis("- Shield armor buff has ended.")
+            cmc.cprint("yellow", "- Shield armor buff has ended.")
             target["armor"] -= effect["armor"]
             return False
-        cmc.emphasis("- Shield's timer is now " + str(effect["dur"]))
+        cmc.cprint("yellow", "- Shield's timer is now " + str(effect["dur"]))
 
     # Recharge spell
     if effect["name"] == "recharge":
         if effect["dur"] == 0:
-            cmc.emphasis("- Mana recharge has ended.")
+            cmc.cprint("yellow", "- Mana recharge has ended.")
             return False
-        cmc.emphasis(
+        cmc.cprint(
+            "yellow",
             "- Mana recharged +"
             + str(effect["gain"])
             + "; timer is now "
             + str(effect["dur"])
-            + "."
+            + ".",
         )
         target["mana"] += effect["gain"]
 
     # effect that concern boss (poison)
     if effect["name"] == "poison":
         if effect["dur"] == 0:
-            cmc.emphasis("- Poison finished.")
+            cmc.cprint("yellow", "- Poison finished.")
             return False
         target["health"] -= effect["dmg"]
-        cmc.emphasis(
+        cmc.cprint(
+            "yellow",
             "- Poison damages Boss health "
             + str(effect["dmg"])
             + " hit points; its timer is now "
-            + str(effect["dur"])
+            + str(effect["dur"]),
         )
     return True
 
@@ -144,6 +146,14 @@ def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
     # pad print statement with recursion level for debug
     pad = " " * d
 
+    # We only check boss health here, as effect can kill him
+    # Hero health is checked directly after boss attack
+    if boss["health"] <= 0:
+        cmc.cprint("green", pad + "Boss has died! Mana cost was " + str(mana_cost))
+        ends["wins"] += 1
+        win_paths.append(spcast + [str(mana_cost)])
+        return mana_cost
+
     if turn == "hero":
         print(pad + " 🧙 turn")
     else:
@@ -165,23 +175,14 @@ def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
     # start with effects
     applyEffects(hero, boss)
 
-    # Only check boss health here, as effect can kill him
-    # Hero health is checked directly after boss attack
-    if boss["health"] <= 0:
-        cmc.success(pad + "Boss has died! Mana cost was " + str(mana_cost))
-        ends["wins"] += 1
-        cmc.success(",".join(spcast))
-        win_paths.append(spcast + [str(mana_cost)])
-        return mana_cost
-
     # Recursion branching
     if turn == "hero":
         loc_min_mana = None
 
         # hero attacks
         for spell in spells:
-            # can't cast spells if still in effect (shield, poison, recharge)
-            if spellIsActive(hero, boss, spell):
+            # can't cast spells if still in effect (shield, poison, or recharge)
+            if spellIsActive([hero, boss], spell):
                 continue
 
             # prevent recursion branch if this path will yield a worse mana score
@@ -192,7 +193,7 @@ def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
             no_action = True
             # does hero have enough mana to cast this spell
             if spell["mana"] <= hero["mana"]:
-                cmc.ok(pad + " Hero casts " + spell["name"])
+                cmc.cprint("cyan", pad + " Hero casts " + spell["name"])
                 no_action = False
 
                 spell_mana_cost = None
@@ -240,9 +241,13 @@ def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
         # boss attacks - calculate damage
         boss_attack_dmg = boss["dmg"] - hero["armor"]
         boss_attack_dmg = 1 if boss_attack_dmg < 1 else boss_attack_dmg
-        hero["health"] -= boss_attack_dmg
 
-        cmc.warning(
+        # boss can only damage hero if still alive
+        if boss["health"] > 0:
+            hero["health"] -= boss_attack_dmg
+
+        cmc.cprint(
+            "orange",
             pad
             + " Boss attacks for ("
             + str(boss["dmg"])
@@ -250,12 +255,12 @@ def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
             + str(hero["armor"])
             + ") "
             + str(boss_attack_dmg)
-            + " damage."
+            + " damage.",
         )
 
         # Potential recursion end
         if hero["health"] <= 0:
-            cmc.fail(pad + " Hero has died!")
+            cmc.cprint("red", pad + " Hero has died!")
             ends["deaths"] += 1
             return False
 
@@ -272,7 +277,7 @@ def tests():
     ) == (173 + 53)
     print("win_paths", win_paths)
     print("Summary", ends)
-    cmc.success("Test 1 passed")
+    cmc.cprint("green", "Test 1 passed")
 
     assert fight(
         {"health": 10, "armor": 0, "mana": 250, "effects": []},
@@ -280,8 +285,18 @@ def tests():
     ) == (229 + 113 + 73 + 173 + 53)
     print(win_paths)
     print(ends)
-    cmc.success("Test 2 passed")
+    cmc.cprint("green", "Test 2 passed")
 
+    # Are we detecting correctly that effect spells are already active
+    hero = {"health": 10, "armor": 0, "mana": 250, "effects": []}
+    boss = {"health": 13, "dmg": 8, "effects": []}
+    hero["effects"].append(spells[0])
+    boss["effects"].append(spells[1])
+    hero["effects"].append(spells[2])
+
+    assert spellIsActive([hero], spells[0])
+    assert spellIsActive([boss], spells[1])
+    assert spellIsActive([hero], spells[2])
     print("All tests passed!")
 
 
@@ -296,12 +311,12 @@ def part1():
     print(answer)
     print(win_paths)
     for wp in win_paths:
-        cmc.ok(",".join(wp))
+        cmc.cprint("cyan", ",".join(wp))
     print("Stats", ends)
     print("Part 1 answer is:", answer)
     # 491 - too low. Problem with not removing shield effect.
     # 780 - too low. Was not removing poison effect from Boss.
-    # 1249 - too high.
+    # 1249 - too high. Was losing data from first recursion... but no change.
 
 
 def part2(data):

@@ -10,38 +10,42 @@ from PIL import Image
 class tc:
     """Provide colours for terminal printing."""
 
+    ENDC = "\033[0m"
+
+    RED = "\033[91m"
+    ORANGE = "\033[33m"
+    YELLOW = "\033[93m"
+    GREEN = "\033[92m"
     BLUE = "\033[94m"
     CYAN = "\033[96m"
-    GREEN = "\033[92m"
-    ORANGE = "\033[93m"
-    RED = "\033[91m"
+    MAGENTA = "\033[95m"
+
     BOLD = "\033[1m"
     UNDERLINE = "\033[4m"
-    ENDC = "\033[0m"
+
     H_RED = "\033[41m"
     H_GREEN = "\033[42m"
     H_YELLOW = "\033[43m"
     H_BLUE = "\033[44m"
 
 
-def ok(text, **kwargs):
-    print(tc.BLUE + text + tc.ENDC, **kwargs)
-
-
-def success(text, **kwargs):
-    print(tc.GREEN + text + tc.ENDC, **kwargs)
-
-
-def emphasis(text, **kwargs):
-    print(tc.CYAN + text + tc.ENDC, **kwargs)
-
-
-def warning(text, **kwargs):
-    print(tc.ORANGE + text + tc.ENDC, **kwargs)
-
-
-def fail(text, **kwargs):
-    print(tc.RED + text + tc.ENDC, **kwargs)
+def cprint(colour, text, **kwargs):
+    if colour == "red":
+        print(tc.RED + text + tc.ENDC, **kwargs)
+    elif colour == "orange":
+        print(tc.ORANGE + text + tc.ENDC, **kwargs)
+    elif colour == "yellow":
+        print(tc.YELLOW + text + tc.ENDC, **kwargs)
+    elif colour == "green":
+        print(tc.GREEN + text + tc.ENDC, **kwargs)
+    elif colour == "blue":
+        print(tc.BLUE + text + tc.ENDC, **kwargs)
+    elif colour == "cyan":
+        print(tc.CYAN + text + tc.ENDC, **kwargs)
+    elif colour == "magenta":
+        print(tc.MAGENTA + text + tc.ENDC, **kwargs)
+    else:
+        print(tc.BOLD + text + tc.ENDC, **kwargs)
 
 
 def matPrint(mat, cwidth=1, replace=0, replacement="."):
