@@ -152,8 +152,11 @@ def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
         cmc.cprint("green", pad + "Boss has died! Mana cost was " + str(mana_cost))
         ends["wins"] += 1
         win_paths.append(spcast + [str(mana_cost)])
+        exit()
         return mana_cost
 
+    # START OF HERO/BOSS TURN
+    # These must be completed in entirety
     if turn == "hero":
         print(pad + " 🧙 turn")
     else:
@@ -233,30 +236,33 @@ def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
             if no_action:
                 print(pad, "No action taken")
                 ends["no_mana"] += 1
+                return False
         if loc_min_mana is None:
             return False
         return loc_min_mana
+        # END OF HERO TURN
 
     if turn == "boss":
-        # boss attacks - calculate damage
-        boss_attack_dmg = boss["dmg"] - hero["armor"]
-        boss_attack_dmg = 1 if boss_attack_dmg < 1 else boss_attack_dmg
-
         # boss can only damage hero if still alive
         if boss["health"] > 0:
+            # boss attacks - calculate damage
+            boss_attack_dmg = boss["dmg"] - hero["armor"]
+            boss_attack_dmg = 1 if boss_attack_dmg < 1 else boss_attack_dmg
             hero["health"] -= boss_attack_dmg
 
-        cmc.cprint(
-            "orange",
-            pad
-            + " Boss attacks for ("
-            + str(boss["dmg"])
-            + " - "
-            + str(hero["armor"])
-            + ") "
-            + str(boss_attack_dmg)
-            + " damage.",
-        )
+            cmc.cprint(
+                "orange",
+                pad
+                + " Boss attacks for ("
+                + str(boss["dmg"])
+                + " - "
+                + str(hero["armor"])
+                + ") "
+                + str(boss_attack_dmg)
+                + " damage.",
+            )
+
+        # END OF BOSS TURN
 
         # Potential recursion end
         if hero["health"] <= 0:
