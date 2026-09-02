@@ -29,32 +29,31 @@ def processEffects(hero, boss, effects):
         if "dur" in effect:
             effect["dur"] -= 1
 
+        cmc.cprint("yellow", "- " + effect_name + " timer is now " + str(effect["dur"]))
+
         # if negative, add effect to purge list
-        if effect["dur"] < 0:
+        if effect["dur"] == 0:
+            cmc.cprint("yellow", "- " + effect_name + " has ended.")
             purge_effects.append(effect_name)
 
         # Shield
         if effect_name == "Shield":
-            if effect["dur"] <= 0:
-                cmc.cprint("yellow", "- Shield has ended.")
+            if effect["dur"] == 0:
                 hero["armor"] -= effect["armor"]
-                continue
-            cmc.cprint("yellow", "- Shield timer is now " + str(effect["dur"]))
+                cmc.cprint(
+                    "orange",
+                    "Hero's Shield wears off, decreasing armor by "
+                    + str(effect["armor"])
+                    + ".",
+                )
 
         # Recharge
         if effect_name == "Recharge":
-            if effect["dur"] < 0:
-                cmc.cprint("yellow", "- Mana recharge has ended.")
-                continue
             hero["mana"] += effect["gain"]
-            cmc.cprint("yellow", "- Recharge timer is now " + str(effect["dur"]))
+            cmc.cprint("orange", "Hero recharges " + str(effect["gain"]) + " mana.")
 
         # Poison
         if effect_name == "Poison":
-            if effect["dur"] < 0:
-                cmc.cprint("yellow", "- Poison has ended.")
-                continue
-            cmc.cprint("yellow", "- Poison timer is now " + str(effect["dur"]))
             boss["health"] -= effect["dmg"]
             cmc.cprint(
                 "orange", "Boss suffers " + str(effect["dmg"]) + " poison damage."
@@ -290,6 +289,6 @@ def part2():
 
 
 if __name__ == "__main__":
-    # tests()
-    part1()
+    tests()
+    # part1()
     # part2()
