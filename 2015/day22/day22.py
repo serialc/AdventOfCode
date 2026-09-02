@@ -69,17 +69,15 @@ def processEffect(target, effect_index):
     # effects that concern hero (shield, recharge)
     # Shield/armor spell
     if effect["name"] == "shield":
-        if effect["dur"] < 0:
+        cmc.cprint("yellow", "- Shield's timer is now " + str(effect["dur"]))
+
+        if effect["dur"] == 0:
             cmc.cprint("yellow", "- Shield armor buff has ended.")
             target["armor"] -= effect["armor"]
             return False
-        cmc.cprint("yellow", "- Shield's timer is now " + str(effect["dur"]))
 
     # Recharge spell
     if effect["name"] == "recharge":
-        if effect["dur"] < 0:
-            cmc.cprint("yellow", "- Mana recharge has ended.")
-            return False
         cmc.cprint(
             "yellow",
             "- Mana recharged +"
@@ -90,11 +88,12 @@ def processEffect(target, effect_index):
         )
         target["mana"] += effect["gain"]
 
+        if effect["dur"] == 0:
+            cmc.cprint("yellow", "- Mana recharge has ended.")
+            return False
+
     # effect that concern boss (poison)
     if effect["name"] == "poison":
-        if effect["dur"] < 0:
-            cmc.cprint("yellow", "- Poison finished.")
-            return False
         target["health"] -= effect["dmg"]
         cmc.cprint(
             "yellow",
@@ -103,6 +102,10 @@ def processEffect(target, effect_index):
             + " hit points; its timer is now "
             + str(effect["dur"]),
         )
+
+        if effect["dur"] == 0:
+            cmc.cprint("yellow", "- Poison finished.")
+            return False
 
     return True
 
@@ -160,7 +163,6 @@ def fight(hero, boss, hard_mode=False, turn="hero", mana_cost=0, d=0, spcast=[])
     # These must be completed in entirety
     if turn == "hero":
         print(pad + " 🧙 turn")
-
     else:
         print(pad + " 👹 turn")
 
