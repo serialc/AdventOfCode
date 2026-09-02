@@ -43,6 +43,8 @@ Day:
 19. string concatenations, permutations, recursion
 20. permutations, factors, brute force
 21. RPG, permutations
+22. RPG, permutations
+23. assembly, registers, turing tape
 
 ### Errors that cost time
 
@@ -51,3 +53,4 @@ Day:
 - Day 13: Used wrong list when retrieving indices. Took a while to find the problem
 - Day 17: When doing combinations, remember that we need to sometimes do nothing for a recursion.
 - Day 21: I kept using the same boss for every fight, his health was negative. Needed to pass a copy().
+- Day 22: Edge cases killed me. 

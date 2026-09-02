@@ -30,6 +30,7 @@ class tc:
 
 
 def cprint(colour, text, **kwargs):
+    """Print text in specified colour."""
     if colour == "red":
         print(tc.RED + text + tc.ENDC, **kwargs)
     elif colour == "orange":
