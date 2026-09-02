@@ -12,7 +12,7 @@ import copy
 spells = {
     "Magic Missile": {"mana": 53, "dmg": 4},
     "Drain": {"mana": 73, "dmg": 2, "heal": 2},
-    "Shield": {"mana": 113, "armor": 7, "dur": 6, "effects": "hero"},
+    "Shield": {"mana": 113, "dur": 6, "armor": 7, "effects": "hero"},
     "Poison": {"mana": 173, "dur": 6, "dmg": 3, "effects": "boss"},
     "Recharge": {"mana": 229, "dur": 5, "gain": 101, "effects": "hero"},
 }
@@ -72,6 +72,8 @@ def castSpell(hero, boss, spell_name):
 
     # apply spell effects
     if spell_name == "Shield":
+        if hero["armor"] != 0:
+            exit("Unexpected armor level")
         hero["armor"] += spell["armor"]
 
     if spell_name == "Magic Missile":
@@ -121,7 +123,7 @@ def spellSet(set_size, spell_set=[], d=0):
         # skip spells with duration effects already active
         if sp_name in ["Poison", "Shield"]:
             # can't have same spell in last three spell_set items
-            lb = len(spell_set) - 3
+            lb = len(spell_set) - 2
             lb = 0 if lb < 0 else lb
             if sp_name in spell_set[lb:]:
                 continue
@@ -146,9 +148,11 @@ def fight(wiz, oni, spell_set, lowest_mana_solution, hard_mode):
     cmc.cprint("magenta", "\n\nSTART OF FIGHT")
 
     # start the fight
-    for spell in spell_set:
+    for i in range(len(spell_set)):
+        spell = spell_set[i]
+
         # HERO START OF TURN
-        cmc.cprint("", "🧙 turn")
+        cmc.cprint("", "🧙 turn " + str(i))
         printStatus(wiz, oni)
 
         if hard_mode:
@@ -176,9 +180,9 @@ def fight(wiz, oni, spell_set, lowest_mana_solution, hard_mode):
         mana_cost += castSpell(wiz, oni, spell)
 
         # quit if we're doing worse than best solution
-        if lowest_mana_solution is not None and lowest_mana_solution <= mana_cost:
+        if lowest_mana_solution is not None and mana_cost > lowest_mana_solution:
             cmc.cprint(
-                "orange", "Abandon. Mana use exceeds or matches best solution found."
+                "orange", "Abandon. Mana use already exceeds best solution found."
             )
             return
 
@@ -220,6 +224,8 @@ def adventure(hero, boss, spells_count, lms=None, hard_mode=False):
     """Try all possible fight permutations."""
     lowest_mana_solution = lms
 
+    successes = []
+
     # Provides a unique set of spell combinations (just names)
     for spell_set in spellSet(spells_count):
 
@@ -229,11 +235,16 @@ def adventure(hero, boss, spells_count, lms=None, hard_mode=False):
         )
 
         # save result if better than previous fight
-        if type(result) is int and (
-            lowest_mana_solution is None or result < lowest_mana_solution
-        ):
-            lowest_mana_solution = result
+        if type(result) is int:
 
+            # input("Observe victory above. Hit [Enter] to continue.")
+            # save victories
+            successes.append([spell_set, result])
+
+            if lowest_mana_solution is None or result < lowest_mana_solution:
+                lowest_mana_solution = result
+
+    print(successes)
     return lowest_mana_solution
 
 
@@ -278,17 +289,55 @@ def part1():
 def part2():
     """Solves and prints part2 answer."""
     print("#### Part 2 ####")
+
+    # puzzle input
+    hero = {"health": 50, "armor": 0, "mana": 500}
+    boss = {"health": 55, "dmg": 8}
+
+    answer = adventure(hero, boss, 9, 1295, True)
+
+    print("Part 2 answer is:", answer)
+
+
+def manual():
+    """Manually try some fights to see if they work in my code."""
+    wc = [
+        "Poison",
+        "Recharge",
+        "Shield",
+        "Poison",
+        "Recharge",
+        "Drain",
+        "Poison",
+        "Drain",
+        "Magic Missile",
+    ]
+
+    for spells in spellSet(9):
+        # check spells
+        all_good = True
+        for i in range(len(spells)):
+            if spells[i] != wc[i]:
+                all_good = False
+
+        if all_good:
+            print("Found the spell set!", spells)
+
     hero = {"health": 50, "armor": 0, "mana": 500}
     # puzzle input below
     boss = {"health": 55, "dmg": 8}
-
-    answer = adventure(hero, boss, 10, 1295, True)
-    print("Part 2 answer is:", answer)
-    # 1295 was too high with v1
-    # my first solution is 1362
+    score = fight(
+        hero,
+        boss,
+        wc,
+        None,
+        True,
+    )
+    print("Score", score)
 
 
 if __name__ == "__main__":
-    tests()
+    # tests()
     # part1()
-    # part2()
+    part2()
+    # manual()

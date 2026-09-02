@@ -12,7 +12,7 @@ import copy
 spells = [
     {"name": "magic missile", "mana": 53, "dmg": 4},
     {"name": "drain", "mana": 73, "dmg": 2, "heal": 2},
-    {"name": "shield", "mana": 113, "armor": 7, "dur": 6, "effects": "hero"},
+    {"name": "shield", "mana": 113, "dur": 6, "armor": 7, "effects": "hero"},
     {"name": "poison", "mana": 173, "dur": 6, "dmg": 3, "effects": "boss"},
     {"name": "recharge", "mana": 229, "dur": 5, "gain": 101, "effects": "hero"},
 ]
