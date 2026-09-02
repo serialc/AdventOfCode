@@ -35,7 +35,7 @@ def processEffects(hero, boss, effects):
 
         # Shield
         if effect_name == "Shield":
-            if effect["dur"] < 0:
+            if effect["dur"] <= 0:
                 cmc.cprint("yellow", "- Shield has ended.")
                 hero["armor"] -= effect["armor"]
                 continue
@@ -249,6 +249,18 @@ def tests():
     boss = {"health": 14, "dmg": 8}
     assert adventure(hero, boss, 5) == (229 + 113 + 73 + 173 + 53)
     cmc.cprint("green", "Test 2 passed")
+
+    hero = {"health": 10, "armor": 0, "mana": 250}
+    boss = {"health": 14, "dmg": 8}
+    assert fight(
+        hero,
+        boss,
+        ["Recharge", "Shield", "Drain", "Poison", "Magic Missile"],
+        None,
+        False,
+    ) == (229 + 113 + 73 + 173 + 53)
+
+    cmc.cprint("green", "Test 3 passed")
     print("All tests passed!")
 
 
@@ -271,28 +283,7 @@ def part2():
     # puzzle input below
     boss = {"health": 55, "dmg": 8}
 
-    answer = fight(
-        hero,
-        boss,
-        [
-            "Recharge",
-            "Poison",
-            "Shield",
-            "Magic Missile",
-            "Recharge",
-            "Poison",
-            "Shield",
-            "Magic Missile",
-            "Magic Missile",
-            "Magic Missile",
-            "Magic Missile",
-            "Magic Missile",
-        ],
-        1296,
-        True,
-    )
-
-    # answer = adventure(hero, boss, 10, 1295, True)
+    answer = adventure(hero, boss, 10, 1295, True)
     print("Part 2 answer is:", answer)
     # 1295 was too high with v1
     # my first solution is 1362
@@ -300,5 +291,5 @@ def part2():
 
 if __name__ == "__main__":
     # tests()
-    # part1()
-    part2()
+    part1()
+    # part2()
