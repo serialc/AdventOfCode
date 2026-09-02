@@ -10,11 +10,11 @@ import copy
 
 
 spells = [
-    {"name": "recharge", "mana": 229, "dur": 5, "gain": 101, "effects": "hero"},
-    {"name": "poison", "mana": 173, "dur": 6, "dmg": 3, "effects": "boss"},
-    {"name": "shield", "mana": 113, "armor": 7, "dur": 6, "effects": "hero"},
-    {"name": "drain", "mana": 73, "dmg": 2, "heal": 2},
     {"name": "magic missile", "mana": 53, "dmg": 4},
+    {"name": "drain", "mana": 73, "dmg": 2, "heal": 2},
+    {"name": "shield", "mana": 113, "armor": 7, "dur": 6, "effects": "hero"},
+    {"name": "poison", "mana": 173, "dur": 6, "dmg": 3, "effects": "boss"},
+    {"name": "recharge", "mana": 229, "dur": 5, "gain": 101, "effects": "hero"},
 ]
 
 
@@ -69,7 +69,7 @@ def processEffect(target, effect_index):
     # effects that concern hero (shield, recharge)
     # Shield/armor spell
     if effect["name"] == "shield":
-        if effect["dur"] == 0:
+        if effect["dur"] < 0:
             cmc.cprint("yellow", "- Shield armor buff has ended.")
             target["armor"] -= effect["armor"]
             return False
@@ -77,7 +77,7 @@ def processEffect(target, effect_index):
 
     # Recharge spell
     if effect["name"] == "recharge":
-        if effect["dur"] == 0:
+        if effect["dur"] < 0:
             cmc.cprint("yellow", "- Mana recharge has ended.")
             return False
         cmc.cprint(
@@ -92,7 +92,7 @@ def processEffect(target, effect_index):
 
     # effect that concern boss (poison)
     if effect["name"] == "poison":
-        if effect["dur"] == 0:
+        if effect["dur"] < 0:
             cmc.cprint("yellow", "- Poison finished.")
             return False
         target["health"] -= effect["dmg"]
@@ -103,6 +103,7 @@ def processEffect(target, effect_index):
             + " hit points; its timer is now "
             + str(effect["dur"]),
         )
+
     return True
 
 
@@ -131,7 +132,7 @@ def applyEffects(hero, boss):
         boss["effects"].pop(i)
 
 
-def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
+def fight(hero, boss, hard_mode=False, turn="hero", mana_cost=0, d=0, spcast=[]):
     """Return the lowest mana solution for victory against boss."""
     global mana_min_win
     global ends
@@ -139,7 +140,7 @@ def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
 
     # reset the global mana_min_win and stats for new fight
     if d == 0 and turn == "hero":
-        mana_min_win = 1250
+        mana_min_win = 1295
         ends = {"wins": 0, "deaths": 0, "no_mana": 0, "exceeds": 0}
         win_paths = []
 
@@ -150,15 +151,16 @@ def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
     # Hero health is checked directly after boss attack
     if boss["health"] <= 0:
         cmc.cprint("green", pad + "Boss has died! Mana cost was " + str(mana_cost))
+        cmc.cprint("cyan", ",".join(spcast))
         ends["wins"] += 1
         win_paths.append(spcast + [str(mana_cost)])
-        exit()
         return mana_cost
 
-    # START OF HERO/BOSS TURN
+    # START OF HERO/BOSS TURNS
     # These must be completed in entirety
     if turn == "hero":
         print(pad + " 🧙 turn")
+
     else:
         print(pad + " 👹 turn")
 
@@ -174,6 +176,14 @@ def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
         + " mana."
     )
     print(pad + " Boss has " + str(boss["health"]) + " hit points")
+
+    # Hard mode
+    if turn == "hero" and hard_mode:
+        hero["health"] -= 1
+        print(pad + " Hard mode: Hero health decreased by 1 to", hero["health"])
+        if hero["health"] <= 0:
+            cmc.cprint("red", pad + " Hard mode killed the hero!")
+            return False
 
     # start with effects
     applyEffects(hero, boss)
@@ -206,8 +216,10 @@ def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
                 # is it an effects spell?
                 if "effects" in spell:
                     if spell["effects"] == "hero":
+                        # hero casts on himself
                         spell_mana_cost = initEffect(hero_copy, hero_copy, spell)
                     else:
+                        # hero casts on boss
                         spell_mana_cost = initEffect(hero_copy, boss_copy, spell)
                 else:
                     # must be 'magic missile' or 'drain'
@@ -217,6 +229,7 @@ def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
                 win_mana_cost = fight(
                     hero_copy,
                     boss_copy,
+                    hard_mode,
                     "boss",
                     mana_cost + spell_mana_cost,
                     d,
@@ -272,37 +285,75 @@ def fight(hero, boss, turn="hero", mana_cost=0, d=0, spcast=[]):
 
         # boss doesn't need to create copies - he doesn't branch
         # this will always return to the hero branch
-        return fight(hero, boss, "hero", mana_cost, d + 1, spcast)
+        return fight(hero, boss, hard_mode, "hero", mana_cost, d + 1, spcast)
 
 
 def tests():
     """Run some tests."""
-    assert fight(
-        {"health": 10, "armor": 0, "mana": 250, "effects": []},
-        {"health": 13, "dmg": 8, "effects": []},
-    ) == (173 + 53)
+    hero = {"health": 10, "armor": 0, "mana": 250, "effects": []}
+    boss = {"health": 13, "dmg": 8, "effects": []}
+    assert fight(copy.deepcopy(hero), copy.deepcopy(boss)) == (173 + 53)
     print("win_paths", win_paths)
     print("Summary", ends)
     cmc.cprint("green", "Test 1 passed")
 
-    assert fight(
-        {"health": 10, "armor": 0, "mana": 250, "effects": []},
-        {"health": 14, "dmg": 8, "effects": []},
-    ) == (229 + 113 + 73 + 173 + 53)
+    boss = {"health": 14, "dmg": 8, "effects": []}
+    assert fight(copy.deepcopy(hero), copy.deepcopy(boss)) == (
+        229 + 113 + 73 + 173 + 53
+    )
     print(win_paths)
     print(ends)
     cmc.cprint("green", "Test 2 passed")
 
     # Are we detecting correctly that effect spells are already active
-    hero = {"health": 10, "armor": 0, "mana": 250, "effects": []}
+    hero = {"health": 10, "armor": 0, "mana": 515, "effects": []}
     boss = {"health": 13, "dmg": 8, "effects": []}
-    hero["effects"].append(spells[0])
-    boss["effects"].append(spells[1])
-    hero["effects"].append(spells[2])
+    initEffect(hero, hero, spells[2])
+    initEffect(hero, boss, spells[3])
+    initEffect(hero, hero, spells[4])
 
-    assert spellIsActive([hero], spells[0])
-    assert spellIsActive([boss], spells[1])
     assert spellIsActive([hero], spells[2])
+    assert spellIsActive([boss], spells[3])
+    assert spellIsActive([hero], spells[4])
+
+    applyEffects(hero, boss)
+    assert hero["armor"] == 7
+    assert boss["health"] == 10
+    assert hero["mana"] == 101
+    applyEffects(hero, boss)
+    assert hero["armor"] == 7
+    assert boss["health"] == 7
+    assert hero["mana"] == 202
+    applyEffects(hero, boss)
+    assert hero["armor"] == 7
+    assert boss["health"] == 4
+    assert hero["mana"] == 303
+    applyEffects(hero, boss)
+    assert hero["armor"] == 7
+    assert boss["health"] == 1
+    assert hero["mana"] == 404
+    applyEffects(hero, boss)
+    assert hero["armor"] == 7
+    assert boss["health"] == -2
+    assert hero["mana"] == 505
+    applyEffects(hero, boss)
+    assert hero["armor"] == 7
+    assert boss["health"] == -5
+    assert hero["mana"] == 505
+    applyEffects(hero, boss)
+    assert hero["armor"] == 0
+    assert boss["health"] == -5
+    assert hero["mana"] == 505
+
+    hero = {"health": 11, "armor": 0, "mana": 250, "effects": []}
+    boss = {"health": 13, "dmg": 8, "effects": []}
+    assert fight(copy.deepcopy(hero), copy.deepcopy(boss), True) == (173 + 53)
+
+    hero = {"health": 15, "armor": 0, "mana": 250, "effects": []}
+    boss = {"health": 14, "dmg": 8, "effects": []}
+    assert fight(copy.deepcopy(hero), copy.deepcopy(boss), True) == (
+        229 + 113 + 73 + 173 + 53
+    )
     print("All tests passed!")
 
 
@@ -314,7 +365,6 @@ def part1():
         # puzzle input below
         {"health": 55, "dmg": 8, "effects": []},
     )
-    print(answer)
     print(win_paths)
     for wp in win_paths:
         cmc.cprint("cyan", ",".join(wp))
@@ -322,18 +372,28 @@ def part1():
     print("Part 1 answer is:", answer)
     # 491 - too low. Problem with not removing shield effect.
     # 780 - too low. Was not removing poison effect from Boss.
-    # 1249 - too high. Was losing data from first recursion... but no change.
+    # 1249 - too high. Decrement of turns went too fast by 1. (e.g. recharge lasted 4 rather than 5 turns)
 
 
-def part2(data):
+def part2():
     """Solves and prints part2 answer."""
     print("#### Part 2 ####")
     # turn on corner lights
-    answer = main(data)
+    answer = fight(
+        {"health": 50, "armor": 0, "mana": 500, "effects": []},
+        # puzzle input below
+        {"health": 55, "dmg": 8, "effects": []},
+        True,
+    )
+    print(win_paths)
+    for wp in win_paths:
+        cmc.cprint("cyan", ",".join(wp))
+    print("Stats", ends)
     print("Part 2 answer is:", answer)
+    # 1295 - too high.
 
 
 if __name__ == "__main__":
     # tests()
-    part1()
-    # part2()
+    # part1()
+    part2()
