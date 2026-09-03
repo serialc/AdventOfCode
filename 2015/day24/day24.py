@@ -24,22 +24,43 @@ def loadInput(input_file):
     return data
 
 
+smallest_size = None
+
+
 def distribute(gifts, bw, bag=()):
     """Return which number combos reach target bag weight."""
+    global smallest_size
+
+    # if bag is good weigh, update shortest if bag is shorter, return bag
+    if sum(bag) == bw:
+        if smallest_size is None or len(bag) < smallest_size:
+            smallest_size = len(bag)
+        return [bag]
+
+    # if there are no more gifts and sum(bag) is not target bag weight, return
     if len(gifts) == 0:
-        if sum(bag) == bw:
-            return [bag]
+        return ()
+
+    # if the bag is already the same size as the smallest found but not a solution, return
+    if len(bag) == smallest_size:
         return ()
 
     blist = []
+    # continue exploring combinations
+    # -> with next gift
     if (sum(bag) + gifts[0]) <= bw:
         blist += distribute(gifts[1:], bw, bag + (gifts[0],))
+    # -> and without next gift
     blist += distribute(gifts[1:], bw, bag)
     return blist
 
 
 def untangle(data, bags_count=3):
     """Return the entanglement of smallest bag."""
+    global smallest_size
+    # reset optimization
+    smallest_size = None
+
     # get the target bag weight
     bag_weight = int(sum(data) / bags_count)
     if (sum(data) % bags_count) != 0:
