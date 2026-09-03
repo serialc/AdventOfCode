@@ -17,6 +17,7 @@ Day:
    Integrated running tests into process.
 19. Less fun. The concept is challenging but the data is nice so that the solution is actually trivial. Risk of overengineering.
 21. A nice theme. Effort translated directly to progress.
+24. When searching for combinations of numbers that sum to a specific value, sort from largest to smallest.
 
 ### Tags
 
@@ -45,6 +46,7 @@ Day:
 21. RPG, permutations
 22. RPG, permutations
 23. assembly, registers, turing tape
+24. permutations
 
 ### Errors that cost time
 
@@ -54,3 +56,4 @@ Day:
 - Day 17: When doing combinations, remember that we need to sometimes do nothing for a recursion.
 - Day 21: I kept using the same boss for every fight, his health was negative. Needed to pass a copy().
 - Day 22: Edge cases killed me. 
+- Day 24: Tried to solve too much, we don't care about the other bags, just looking for combinations equaling a weight.
