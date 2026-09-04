@@ -47,6 +47,7 @@ Day:
 22. RPG, permutations
 23. assembly, registers, turing tape
 24. permutations
+25. diagonal processing
 
 ### Errors that cost time
 
@@ -57,3 +58,4 @@ Day:
 - Day 21: I kept using the same boss for every fight, his health was negative. Needed to pass a copy().
 - Day 22: Edge cases killed me. 
 - Day 24: Tried to solve too much, we don't care about the other bags, just looking for combinations equaling a weight.
+- Day 25: Given index starts at 1, not 0!
