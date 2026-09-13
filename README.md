@@ -66,7 +66,7 @@ Create all the directories for each day with:
 
 ### Using VE
 
-Using virtual environment and package now:
+Using virtual environment and packages.
 
 Create the VE:
 
@@ -78,11 +78,11 @@ Activate VE:
 
 Install local and active project:
 
-    pip install -e . (path to package to install)
+    pip install -e [path to local package to install]
 
 I will likely need install other dependencies that are not present in VE:
 
-    pip install numpy
+    pip install numpy pillow
 
 Deactivate VE:
 
