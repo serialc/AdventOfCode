@@ -30,6 +30,8 @@ My [Advent of Code](https://adventofcode.com/) solutions
 ![Follow the pipe](2023/day10/day10.gif)
 
 ### 2021
+![Sea cucumbers moving with the current until they cannot](2021/day25/day25.gif" "Sea cucumbers moving with the current until they cannot")
+
 ![Possible probe trajectories for target area](2021/day17/probe_paths.png "Possible probe trajectories for target area")
 
 ![Path through low-ceiling cave](2021/day15/cave_risk_test_input.png "Path through low-ceiling cave")
