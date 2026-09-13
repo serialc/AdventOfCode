@@ -1,7 +1,7 @@
 # 2021
 
 ## Highlights
-![Sea cucumbers moving with the current until they cannot](day25/day25.gif" "Sea cucumbers moving with the current until they cannot")
+![Sea cucumbers moving with the current until they cannot](day25/day25.gif "Sea cucumbers moving with the current until they cannot")
 
 ![Possible probe trajectories for target area](day17/probe_paths.png "Possible probe trajectories for target area")
 
