@@ -1,6 +1,8 @@
 # 2021
 
 ## Highlights
+["Sea cucumbers moving with the current until they cannot"](day25/day25.gif" "Sea cucumbers moving with the current until they cannot")
+
 ![Possible probe trajectories for target area](day17/probe_paths.png "Possible probe trajectories for target area")
 
 ![Path through low-ceiling cave](day15/cave_risk_test_input.png "Path through low-ceiling cave")
@@ -36,6 +38,7 @@ Matrix folding of transparent sheet to produce the following:
 * Day 16: Quite a nice recursive calculator. Too much reading to figure out the requirements.
 * Day 22: Solved in 2026.
 * Day 23: Solved in 2026.
+* Day 24: Solved in 2026. One of the hardest puzzles encountered.
 
 ## Tricky problems
 
@@ -45,6 +48,7 @@ Matrix folding of transparent sheet to produce the following:
 * Day 18: Tried to use recursion. That failed. Restarted but with a tree. Better but painful.
 * Day 22: Couldn't do it. In 2026, did 2015/day06, the same activity in 2D. Then solved this.
 * Day 23: Managed. Lots of work and takes a long time to complete.
+* Day 24: One of the hardest. Had to better understand the assembly in order to make brute forcing feasible. There's a simpler way to do it by matching the offsets of the two types of instruction sets.
 
 ## Tags
 Concepts used or required to solve the challenges:
@@ -71,6 +75,8 @@ Day:
 18. tree, classes
 19. 3D rotation, matrices
 20. matrices, filter, binary, cellular automata
-21. 
+21. recursion, looping
 22. 3D volumes, splitting
 23. movement of shrimp in cave, recursion
+24. brute force, assembly, stack
+25. surface, movement, blocking, matrix copying
